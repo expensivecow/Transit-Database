@@ -22,6 +22,7 @@
   </head>
 
   <body>
+
 <form method="POST" action="register.php">
 <p><input type="submit" value="Reset" name="reset"></p>
 </form>
@@ -39,16 +40,7 @@
         <p class="help-block">Username can contain any letters or numbers, without spaces</p>
       </div>
     </div>
- 
-    <div class="control-group">
-      <!-- E-mail -->
-      <label class="control-label" for="email">E-mail</label>
-      <div class="controls">
-        <input type="text" id="email" name="email" placeholder="" class="input-xlarge">
-        <p class="help-block">Please provide your E-mail</p>
-      </div>
-    </div>
- 
+
     <div class="control-group">
       <!-- Password-->
       <label class="control-label" for="password">Password</label>
@@ -59,11 +51,11 @@
     </div>
  
     <div class="control-group">
-      <!-- Password -->
-      <label class="control-label"  for="password_confirm">Password (Confirm)</label>
+      <!-- E-mail -->
+      <label class="control-label" for="address">Address</label>
       <div class="controls">
-        <input type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge">
-        <p class="help-block">Please confirm password</p>
+        <input type="text" id="address" name="address" placeholder="" class="input-xlarge">
+        <p class="help-block">Please provide your address</p>
       </div>
     </div>
  
@@ -152,12 +144,12 @@ function executeBoundSQL($cmdstr, $list) {
 }
 
 function printResult($result) { //prints results from a select statement
-  echo "<br>Got data from table tab1:<br>";
+  echo "<br>Got data from table customers:<br>";
   echo "<table>";
-  echo "<tr><th>ID</th><th>Name</th></tr>";
+  echo "<tr><th>User </th><th>Address </th><th>Password </th></tr>";
 
   while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-    echo "<tr><td>" . $row["NID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]" 
+    echo "<tr><td>" . $row["USERNAME"] . " </td><td>" . $row["ADDRESS"] . " </td><td>" . $row["PASSWORD"] . "</td></tr>"; //or just use "echo $row[0]" 
   }
   echo "</table>";
 
@@ -168,24 +160,25 @@ if ($db_conn) {
     if (array_key_exists('reset', $_POST)) {
     // Drop old table...
     echo "<br> dropping table <br>";
-    executePlainSQL("Drop table tab1");
+    executePlainSQL("Drop table customers");
 
     // Create new table...
     echo "<br> creating new table <br>";
-    executePlainSQL("create table tab1 (nid number, name varchar2(30), primary key (nid))");
+    executePlainSQL("create table customers (username varchar2(30), address varchar2(30), password varchar2(30), primary key (username))");
     OCICommit($db_conn);
 
     } else
     if (array_key_exists('register', $_POST)) {
       //Getting the values from user and insert data into the table
       $tuple = array (
-        ":bind1" => $_POST['email'],
-        ":bind2" => $_POST['password']
+        ":bind2" => $_POST['address'],
+        ":bind3" => $_POST['password'],
+        ":bind1" => $_POST['username']
       );
       $alltuples = array (
         $tuple
       );
-      executeBoundSQL("insert into tab1 values (:bind1, :bind2)", $alltuples);
+      executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3)", $alltuples);
       OCICommit($db_conn);
     }
 
@@ -194,7 +187,7 @@ if ($db_conn) {
     header("location: register.php");
   } else {
     // Select data...
-    $result = executePlainSQL("select * from tab1");
+    $result = executePlainSQL("select * from customers");
     printResult($result);
   }
 
