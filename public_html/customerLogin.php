@@ -145,7 +145,7 @@ function printResult($result) { //prints results from a select statement
 
   while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
     echo "<tr><td>" . " " . $row["USERNAME"] . " </td><td>" . " " . $row["ADDRESS"] . " </td><td>" . " " . $row["PASSWORD"] . "</td><td>"
-      . " " . $row["PNUMBER"] . "</td></tr>"; //or just use "echo $row[0]" 
+      . " " . $row["PHONE"] . "</td></tr>"; //or just use "echo $row[0]" 
   }
   echo "</table>";
 
@@ -159,9 +159,12 @@ if ($db_conn) {
         $passw = $_POST['password'];
 
       //oci_execute(,OCI_DEFAULT);
-      //echo "here: " . oci_num_rows($result);
       $result = executePlainSQL("select username from customers where username = '$users' and password = '$passw'");
-      //echo '<pre>'.print_r($result,1).'</pre>';
+      $numrows = oci_fetch_all($result, $res);
+      echo $numrows ." rows returned. <br />\n";
+      if($numrows == 0){
+        echo '<pre>'.print("Invalid User or Password.").'</pre>';
+      }
       //echo "Printing number of items: " . $result;
       printResult($result);
     }
