@@ -1,10 +1,5 @@
-<?php session_start(); ?>
-<?php 
-echo $_SESSION['username'];
-if(isset($_SESSION['username'])){
-      header("location: index.php");
-    }
-?>
+<?php session_save_path("/home/p/p2n8/php");
+  session_start();?>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -74,7 +69,9 @@ if(isset($_SESSION['username'])){
   </body>
 
 <?php
-
+if(isset($_SESSION['username'])){
+      header("location: index.php");
+    }
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
 
@@ -159,6 +156,9 @@ function printResult($result) { //prints results from a select statement
 
 // Connect Oracle...
 if ($db_conn) {
+    if (!is_writable(session_save_path())) {
+      echo 'Session path "'.session_save_path().'" is not writable for PHP!'; 
+    }
     if(array_key_exists('Login', $_POST)) {
         
         $users = $_POST['username'];

@@ -1,9 +1,7 @@
-<?php session_start();?>
+<?php session_save_path("/home/p/p2n8/php");
+  session_start();?>
 <?php
-echo $_SESSION['username'];
-if(isset($_SESSION['username'])){
-      echo "RANDOM";
-    }
+if(!isset($_SESSION['username'])){
 ?>
   <head>
     <meta charset="utf-8">
@@ -58,3 +56,12 @@ if(isset($_SESSION['username'])){
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../js/bootstrap.min.js"></script>
   </body>
+<?php
+else{
+
+?>
+
+<?php
+}
+
+?>
