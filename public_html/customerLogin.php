@@ -23,40 +23,22 @@
     <![endif]-->
   </head>
 
-
   <body>
 
-<form class="form-horizontal" action='' method="POST">
-  <fieldset>
-    <div id="legend">
-      <legend class="">Log In</legend>
-    </div>
-    <div class="control-group">
-      <!-- Username -->
-      <label class="control-label"  for="username">Username</label>
-      <div class="controls">
-        <input type="text" id="username" name="username" placeholder="" class="input-xlarge">
-        <p class="help-block">Username can contain any letters or numbers, without spaces</p>
-      </div>
-    </div>
+    <div class="container">
 
-    <div class="control-group">
-      <!-- Password-->
-      <label class="control-label" for="password">Password</label>
-      <div class="controls">
-        <input type="password" id="password" name="password" placeholder="" class="input-xlarge">
-        <p class="help-block">Password should be at least 4 characters</p>
-      </div>
-    </div>
- 
-    <div class="control-group">
-      <!-- Button -->
-      <div class="controls">
-        <button type="submit" value="Login" class="btn btn-success" name ="Login">Log In</button>
-      </div>
-    </div>
-  </fieldset>
-</form>
+      <form class="form-signin" action='' method="POST">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputEmail" class="sr-only">Username</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        <button type="submit" value="Login" class="btn btn-lg btn-primary btn-block" name ="Login">Sign in</button>
+      </form>
+
+    </div> <!-- /container -->
+
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
@@ -123,7 +105,6 @@ function executeBoundSQL($cmdstr, $list) {
     $r = OCIExecute($statement, OCI_DEFAULT);
     if (!$r) {
       echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
-      echo "<script> var data = <?php echo $cmdstr; ?> alert(data);</script>";
       $e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
       echo htmlentities($e['message']);
       echo "<br>";
@@ -136,9 +117,9 @@ function executeBoundSQL($cmdstr, $list) {
 function printResult($result) { //prints results from a select statement
   echo "<br>Got data from table customers:<br>";
   echo "<table>";
-  echo "<tr><th>User </th> <th>Address </th> <th>Password </th></tr>";
+  echo "<tr><th>User </th></tr>";
   while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-    echo "<tr><td>" . $row["USERNAME"] . " </td><td>" . $row["ADDRESS"] . " </td><td>" . $row["PASSWORD"] . "</td></tr>"; //or just use "echo $row[0]" 
+    echo "<tr><td>" . $row["USERNAME"] . "</td></tr>"; //or just use "echo $row[0]" 
   }
   echo "</table>";
 
@@ -146,23 +127,20 @@ function printResult($result) { //prints results from a select statement
 
 // Connect Oracle...
 if ($db_conn) {
-    OCICommit($db_conn);
     if(array_key_exists('Login', $_POST)) {
 
-        $users = $_POST['username'];
-        $passw = $_POST['password'];
+        $tuple = array (
+        ":bind1" => $_POST['username'],
+        ":bind2" => $_POST['password']
+      );
+      $alltuples = array (
+        $tuple
+      );
 
-        echo "user: " . $users;
-        echo "password: " . $passw;
-        
-        $alltuples = array (
-            $tuple
-        );
-
-        $result = executeBoundSQL("select username from customers where username = '$users' and password = '$passw'", $alltuples);
-
+        $result = executeBoundSQL("select username from customers where username LIKE ':bind1' and password LIKE ':bind2'", $alltuples);
         printResult($result);
     }
+
     //Commit to save changes...
     OCILogoff($db_conn);
    // printResult($result);
