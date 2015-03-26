@@ -23,26 +23,43 @@
     <![endif]-->
   </head>
 
+
   <body>
 
-    <div class="container">
+<form class="form-horizontal" action='' method="POST">
+  <fieldset>
+    <div id="legend">
+      <legend class="">Log In</legend>
+    </div>
+    <div class="control-group">
+      <!-- Username -->
+      <label class="control-label"  for="username">Username</label>
+      <div class="controls">
+        <input type="text" id="username" name="username" placeholder="" class="input-xlarge">
+        <p class="help-block">Username can contain any letters or numbers, without spaces</p>
+      </div>
+    </div>
 
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="inputEmail" class="sr-only">Username</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
-
-    </div> <!-- /container -->
-
-
+    <div class="control-group">
+      <!-- Password-->
+      <label class="control-label" for="password">Password</label>
+      <div class="controls">
+        <input type="password" id="password" name="password" placeholder="" class="input-xlarge">
+        <p class="help-block">Password should be at least 4 characters</p>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+      <!-- Button -->
+      <div class="controls">
+        <button type="submit" value="Login" class="btn btn-success" name ="Login">Log In</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
-
 
 <?php
 
@@ -119,8 +136,7 @@ function executeBoundSQL($cmdstr, $list) {
 function printResult($result) { //prints results from a select statement
   echo "<br>Got data from table customers:<br>";
   echo "<table>";
-  echo "<tr><th>User </th><th>Address </th><th>Password </th></tr>";
-
+  echo "<tr><th>User </th> <th>Address </th> <th>Password </th></tr>";
   while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
     echo "<tr><td>" . $row["USERNAME"] . " </td><td>" . $row["ADDRESS"] . " </td><td>" . $row["PASSWORD"] . "</td></tr>"; //or just use "echo $row[0]" 
   }
@@ -130,42 +146,27 @@ function printResult($result) { //prints results from a select statement
 
 // Connect Oracle...
 if ($db_conn) {
-    if (array_key_exists('reset', $_POST)) {
-    // Drop old table...
-    echo "<br> dropping table <br>";
-    executePlainSQL("Drop table customers");
-
-    // Create new table...
-    echo "<br> creating new table <br>";
-    executePlainSQL("create table customers (username varchar2(30), address varchar2(30), password varchar2(30), primary key (username))");
     OCICommit($db_conn);
+    if(array_key_exists('Login', $_POST)) {
 
-    } else
-    if (array_key_exists('register', $_POST)) {
-      //Getting the values from user and insert data into the table
-      $tuple = array (
-        ":bind2" => $_POST['address'],
-        ":bind3" => $_POST['password'],
-        ":bind1" => $_POST['username']
-      );
-      $alltuples = array (
-        $tuple
-      );
-      executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3)", $alltuples);
-      OCICommit($db_conn);
+        $users = $_POST['username'];
+        $passw = $_POST['password'];
+
+        echo "user: " . $users;
+        echo "password: " . $passw;
+        
+        $alltuples = array (
+            $tuple
+        );
+
+        $result = executeBoundSQL("select username from customers where username = '$users' and password = '$passw'", $alltuples);
+
+        printResult($result);
     }
-
-  if ($_POST && $success) {
-    //POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-    header("location: register.php");
-  } else {
-    // Select data...
-    $result = executePlainSQL("select * from customers");
-    printResult($result);
-  }
-
-  //Commit to save changes...
-  OCILogoff($db_conn);
+    //Commit to save changes...
+    OCILogoff($db_conn);
+   // printResult($result);
+    //Commit to save changes...
 } else {
   echo "cannot connect";
   $e = OCI_Error(); // For OCILogon errors pass no handle
