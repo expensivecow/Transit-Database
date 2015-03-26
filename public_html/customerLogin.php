@@ -141,9 +141,11 @@ function executeBoundSQL($cmdstr, $list) {
 function printResult($result) { //prints results from a select statement
   echo "<br>Got data from table customers:<br>";
   echo "<table>";
-  echo "<tr><th>User </th></tr>";
+  echo "<tr><th>User</th>". " " ."<th>Address </th>". " " ."<th>Password </th>". " " ."<th>Phone </th></tr>";
+
   while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-    echo "<tr><td>" . $row["USERNAME"] . "</td></tr>"; //or just use "echo $row[0]" 
+    echo "<tr><td>" . " " . $row["USERNAME"] . " </td><td>" . " " . $row["ADDRESS"] . " </td><td>" . " " . $row["PASSWORD"] . "</td><td>"
+      . " " . $row["PNUMBER"] . "</td></tr>"; //or just use "echo $row[0]" 
   }
   echo "</table>";
 
@@ -152,18 +154,18 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
     if(array_key_exists('Login', $_POST)) {
+        
+        $users = $_POST['username'];
+        $passw = $_POST['password'];
 
-        $tuple = array (
-        ":bind1" => $_POST['username'],
-        ":bind2" => $_POST['password']
-      );
-      $alltuples = array (
-        $tuple
-      );
-
-        $result = executeBoundSQL("select username from customers where username LIKE ':bind1' and password LIKE ':bind2'", $alltuples);
-        printResult($result);
+      //oci_execute(,OCI_DEFAULT);
+      //echo "here: " . oci_num_rows($result);
+      $result = executePlainSQL("select username from customers where username = '$users' and password = '$passw'");
+      //echo '<pre>'.print_r($result,1).'</pre>';
+      //echo "Printing number of items: " . $result;
+      printResult($result);
     }
+    OCICommit($db_conn);
 
     //Commit to save changes...
     OCILogoff($db_conn);
