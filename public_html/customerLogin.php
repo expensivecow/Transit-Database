@@ -24,11 +24,35 @@
   </head>
 
   <body>
-
+  <!-- Adding Navigation Bar-->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Transit</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="index.html">Home</a></li>
+            <li><a href="#Schedule">Schedule</a></li>
+            <li><a href="./register.php">Register</a></li>
+            <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+      <div class="starter-template">
     <div class="container">
 
       <form class="form-signin" action='' method="POST">
-        <h2 class="form-signin-heading">Please sign in</h2>
+        <h2 class="form-signin-heading">Please sign in (Customer)</h2>
         <label for="inputEmail" class="sr-only">Username</label>
         <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
