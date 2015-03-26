@@ -12,7 +12,9 @@
 
     <!-- Bootstrap core CSS -->
     <link href="./css/bootstrap.min.css" rel="stylesheet">
-    <link href="register.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -23,58 +25,24 @@
 
   <body>
 
-<form class="form-horizontal" action='' method="POST">
-  <fieldset>
-    <div id="legend">
-      <legend class="">Register</legend>
-    </div>
-    <div class="control-group">
-      <!-- Username -->
-      <label class="control-label"  for="username">Username</label>
-      <div class="controls">
-        <input type="text" id="username" name="username" placeholder="" class="input-xlarge">
-        <p class="help-block">Username can contain any letters or numbers, without spaces</p>
-      </div>
-    </div>
+    <div class="container">
 
-    <div class="control-group">
-      <!-- Password-->
-      <label class="control-label" for="password">Password</label>
-      <div class="controls">
-        <input type="password" id="password" name="password" placeholder="" class="input-xlarge">
-        <p class="help-block">Password should be at least 4 characters</p>
-      </div>
-    </div>
- 
-    <div class="control-group">
-      <!-- E-mail -->
-      <label class="control-label" for="address">Address</label>
-      <div class="controls">
-        <input type="text" id="address" name="address" placeholder="" class="input-xlarge">
-        <p class="help-block">Please provide your address</p>
-      </div>
-    </div>
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputEmail" class="sr-only">Username</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
 
-    <div class="control-group">
-      <!-- E-mail -->
-      <label class="control-label" for="address">Phone Number</label>
-      <div class="controls">
-        <input type="text" id="pnumber" name="pnumber" placeholder="" class="input-xlarge">
-        <p class="help-block">Please provide your phone number</p>
-      </div>
-    </div>
- 
-    <div class="control-group">
-      <!-- Button -->
-      <div class="controls">
-        <button type="submit" value="Register" class="btn btn-success" name ="register">Register</button>
-      </div>
-    </div>
-  </fieldset>
-</form>
+    </div> <!-- /container -->
+
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
+
 
 <?php
 
@@ -151,11 +119,10 @@ function executeBoundSQL($cmdstr, $list) {
 function printResult($result) { //prints results from a select statement
   echo "<br>Got data from table customers:<br>";
   echo "<table>";
-  echo "<tr><th>User</th>". " " ."<th>Address </th>". " " ."<th>Password </th>". " " ."<th>Phone </th></tr>";
+  echo "<tr><th>User </th><th>Address </th><th>Password </th></tr>";
 
   while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-    echo "<tr><td>" . " " . $row["USERNAME"] . " </td><td>" . " " . $row["ADDRESS"] . " </td><td>" . " " . $row["PASSWORD"] . "</td><td>"
-      . " " . $row["PNUMBER"] . "</td></tr>"; //or just use "echo $row[0]" 
+    echo "<tr><td>" . $row["USERNAME"] . " </td><td>" . $row["ADDRESS"] . " </td><td>" . $row["PASSWORD"] . "</td></tr>"; //or just use "echo $row[0]" 
   }
   echo "</table>";
 
@@ -163,18 +130,28 @@ function printResult($result) { //prints results from a select statement
 
 // Connect Oracle...
 if ($db_conn) {
+    if (array_key_exists('reset', $_POST)) {
+    // Drop old table...
+    echo "<br> dropping table <br>";
+    executePlainSQL("Drop table customers");
+
+    // Create new table...
+    echo "<br> creating new table <br>";
+    executePlainSQL("create table customers (username varchar2(30), address varchar2(30), password varchar2(30), primary key (username))");
+    OCICommit($db_conn);
+
+    } else
     if (array_key_exists('register', $_POST)) {
       //Getting the values from user and insert data into the table
       $tuple = array (
-        ":bind1" => $_POST['username'],
         ":bind2" => $_POST['address'],
         ":bind3" => $_POST['password'],
-        ":bind4" => $_POST['pnumber'],
+        ":bind1" => $_POST['username']
       );
       $alltuples = array (
         $tuple
       );
-      executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3, :bind4, null)", $alltuples);
+      executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3)", $alltuples);
       OCICommit($db_conn);
     }
 
