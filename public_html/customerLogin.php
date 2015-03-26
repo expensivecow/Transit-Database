@@ -1,4 +1,10 @@
-
+<?php session_start(); ?>
+<?php 
+echo $_SESSION['username'];
+if(isset($_SESSION['username'])){
+      header("location: index.php");
+    }
+?>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,6 +30,7 @@
   </head>
 
   <body>
+  <!-- Adding Navigation Bar-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -37,15 +44,11 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Home</a></li>
+            <li class="active"><a href="index.php">Home</a></li>
             <li><a href="#Schedule">Schedule</a></li>
-            <li><a href="register.php">Register</a></li>
+            <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
             <li><a href="#contact">Contact</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-          <li><a href="#Balance">Balance</a></li>
-          <li><a href="#Logout">Sign Out</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -71,7 +74,6 @@
   </body>
 
 <?php
-session_start();
 
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
@@ -157,10 +159,6 @@ function printResult($result) { //prints results from a select statement
 
 // Connect Oracle...
 if ($db_conn) {
-    if(isset($_SESSION['username']) &&
-        $_SESSION['permissions'] == "USER"){
-      header("location: index.html");
-    }
     if(array_key_exists('Login', $_POST)) {
         
         $users = $_POST['username'];
@@ -175,7 +173,10 @@ if ($db_conn) {
       }
       if($numrows == 1){
         $_SESSION['username'] = $users;
+        echo $_SESSION['username'];
         $_SESSION['permissions'] = "USER";
+        echo $_SESSION['permissions'];
+        header("location: index.php");
       }
       //echo "Printing number of items: " . $result;
       printResult($result);
@@ -191,3 +192,4 @@ if ($db_conn) {
   $e = OCI_Error(); // For OCILogon errors pass no handle
   echo htmlentities($e['message']);
 }
+?>
