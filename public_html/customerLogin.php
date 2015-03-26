@@ -167,9 +167,8 @@ if ($db_conn) {
       //oci_execute(,OCI_DEFAULT);
       $result = executePlainSQL("select username from customers where username = '$users' and password = '$passw'");
       $numrows = oci_fetch_all($result, $res);
-      echo $numrows ." rows returned. <br />\n";
       if($numrows == 0){
-        echo '<pre>'.print("Invalid User or Password.").'</pre>';
+        echo "Invalid User or Password.";
       }
       if($numrows == 1){
         $_SESSION['username'] = $users;
@@ -179,7 +178,6 @@ if ($db_conn) {
         header("location: index.php");
       }
       //echo "Printing number of items: " . $result;
-      printResult($result);
     }
     OCICommit($db_conn);
 
