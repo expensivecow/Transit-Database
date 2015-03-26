@@ -51,7 +51,7 @@
       <div class="starter-template">
     <div class="container">
 
-      <form class="form-signin" action='' method="POST">
+      <form class="form-signin" action="customerLogin.php" method="POST">
         <h2 class="form-signin-heading">Please sign in (Customer)</h2>
         <label for="inputEmail" class="sr-only">Username</label>
         <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
@@ -68,6 +68,7 @@
   </body>
 
 <?php
+session_start();
 
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
@@ -153,6 +154,10 @@ function printResult($result) { //prints results from a select statement
 
 // Connect Oracle...
 if ($db_conn) {
+    if(isset($_SESSION['username']) &&
+        $_SESSION['permissions'] == "USER"){
+      header("location: index.html");
+    }
     if(array_key_exists('Login', $_POST)) {
         
         $users = $_POST['username'];
@@ -164,6 +169,10 @@ if ($db_conn) {
       echo $numrows ." rows returned. <br />\n";
       if($numrows == 0){
         echo '<pre>'.print("Invalid User or Password.").'</pre>';
+      }
+      if($numrows == 1){
+        $_SESSION['username'] = $users;
+        $_SESSION['permissions'] = "USER";
       }
       //echo "Printing number of items: " . $result;
       printResult($result);
