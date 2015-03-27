@@ -1,0 +1,63 @@
+-- CS304 TABLES FOR TRANSPORTATION SYSTEM DATABASE
+
+
+create table transit_user(
+	Name char(40),
+	PhoneNumber int,
+	Address char(40),
+	Username char(40),
+	Password char(40),
+	primary key(Name, PhoneNumber)
+);
+
+create table Employee(
+	SIN int,
+	Name char(40),
+	PhoneNumber int,
+	Address char(40),
+	Username char(40),
+	Password char(40),
+	Wage int,
+	JobType char(40),
+	WorkSchedule char(40),
+	primary key(SIN, Name, PhoneNumber),
+	foreign key(Name, PhoneNumber)
+	references transit_user(Name, PhoneNumber)
+);
+
+create table Manager(
+	SIN int,
+	EmployeeSchedule char(40),
+	AdminAccessID char(40),
+	primary key(SIN),
+	foreign key(SIN)
+	references Employee(SIN)
+);
+
+create table Branch(
+	BranchID char(40),
+	Location char(40),
+	primary key(BranchID)
+);
+
+create table Schedule(
+	TransitID char(40),
+	Arrivals timestamp,
+	Departures timestamp,
+	Destination char(40),
+	TravelTime int,
+	primary key(TransitID)
+);
+
+create table OwnedVehicles(
+	VehicleID char(40),
+	Capacity int,
+	ModeOfTransport char(40),
+	Cost int,
+	Model char(40),
+	Age int,
+	BranchID char(40),
+	
+
+	
+	
