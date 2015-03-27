@@ -1,4 +1,5 @@
-
+<?php session_save_path("/home/f/f2r8/php");
+  session_start();?>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +13,9 @@
 
     <!-- Bootstrap core CSS -->
     <link href="./css/bootstrap.min.css" rel="stylesheet">
-    <link href="register.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -22,7 +25,6 @@
   </head>
 
   <body>
-  
   <!-- Adding Navigation Bar-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -46,62 +48,35 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+    <div class="container">
+      <div class="starter-template">
+    <div class="container">
 
-<form class="form-horizontal" action='' method="POST">
-  <fieldset>
-    <div id="legend">
-      <legend class="">Register</legend>
-    </div>
-    <div class="control-group">
-      <!-- Username -->
-      <label class="control-label"  for="username">Username</label>
-      <div class="controls">
-        <input type="text" id="username" name="username" placeholder="" class="input-xlarge">
-        <p class="help-block">Username can contain any letters or numbers, without spaces</p>
-      </div>
-    </div>
+      <form class="form-signin" action="changepass.php" method="POST">
+        <h2 class="form-signin-heading">Please Fill in the Boxes Below</h2>
+        <label for="user" class="sr-only">Username</label>
+        <input type="text" id="user" name="user" class="form-control" placeholder="Username" required autofocus>
 
-    <div class="control-group">
-      <!-- Password-->
-      <label class="control-label" for="password">Password</label>
-      <div class="controls">
-        <input type="password" id="password" name="password" placeholder="" class="input-xlarge">
-        <p class="help-block">Password should be at least 4 characters</p>
-      </div>
-    </div>
- 
-    <div class="control-group">
-      <!-- E-mail -->
-      <label class="control-label" for="address">Address</label>
-      <div class="controls">
-        <input type="text" id="address" name="address" placeholder="" class="input-xlarge">
-        <p class="help-block">Please provide your address</p>
-      </div>
-    </div>
+        <label for="oldpass" class="sr-only">OldPass</label>
+        <input type="password" id="oldpass" name="oldpass" class="form-control" placeholder="Old Password" required>
 
-    <div class="control-group">
-      <!-- E-mail -->
-      <label class="control-label" for="address">Phone Number</label>
-      <div class="controls">
-        <input type="text" id="pnumber" name="pnumber" placeholder="" class="input-xlarge">
-        <p class="help-block">Please provide your phone number</p>
-      </div>
-    </div>
- 
-    <div class="control-group">
-      <!-- Button -->
-      <div class="controls">
-        <button type="submit" value="Register" class="btn btn-success" name ="register">Register</button>
-      </div>
-    </div>
-  </fieldset>
-</form>
+        <label for="newpass" class="sr-only">NewPass</label>
+        <input type="password" id="newpass" name="newpass" class="form-control" placeholder="New Password" required autofocus>
+
+        <label for="confirmpass" class="sr-only">ConfirmPass</label>
+        <input type="password" id="confirmpass" name="confirmpass" class="form-control" placeholder="Repeat New Password" required>
+
+        <button type="submit" value="change" class="btn btn-lg btn-primary btn-block" name ="change">Change Password!</button>
+      </form>
+
+    </div> <!-- /container -->
+
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 
 <?php
-
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
 
@@ -162,7 +137,6 @@ function executeBoundSQL($cmdstr, $list) {
     $r = OCIExecute($statement, OCI_DEFAULT);
     if (!$r) {
       echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
-      echo "<script> var data = <?php echo $cmdstr; ?> alert(data);</script>";
       $e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
       echo htmlentities($e['message']);
       echo "<br>";
@@ -179,7 +153,7 @@ function printResult($result) { //prints results from a select statement
 
   while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
     echo "<tr><td>" . " " . $row["USERNAME"] . " </td><td>" . " " . $row["ADDRESS"] . " </td><td>" . " " . $row["PASSWORD"] . "</td><td>"
-      . " " . $row["PNUMBER"] . "</td></tr>"; //or just use "echo $row[0]" 
+      . " " . $row["PHONE"] . "</td></tr>"; //or just use "echo $row[0]" 
   }
   echo "</table>";
 
@@ -187,34 +161,22 @@ function printResult($result) { //prints results from a select statement
 
 // Connect Oracle...
 if ($db_conn) {
-    if (array_key_exists('register', $_POST)) {
-      //Getting the values from user and insert data into the table
-      $tuple = array (
-        ":bind3" => $_POST['username'],
-        ":bind2" => $_POST['address'],
-        ":bind4" => $_POST['password'],
-        ":bind1" => $_POST['pnumber'],
-      );
-      $alltuples = array (
-        $tuple
-      );
-      executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3, :bind4, 0)", $alltuples);
-      OCICommit($db_conn);
+    if (!is_writable(session_save_path())) {
+      echo 'Session path "'.session_save_path().'" is not writable for PHP!'; 
     }
+    if(array_key_exists('change', $_POST)) {
+      
+      //echo "Printing number of items: " . $result;
+    }
+    OCICommit($db_conn);
 
-  if ($_POST && $success) {
-    //POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-    header("location: register.php");
-  } else {
-    // Select data...
-    $result = executePlainSQL("select * from customers");
-    printResult($result);
-  }
-
-  //Commit to save changes...
-  OCILogoff($db_conn);
+    //Commit to save changes...
+    OCILogoff($db_conn);
+   // printResult($result);
+    //Commit to save changes...
 } else {
   echo "cannot connect";
   $e = OCI_Error(); // For OCILogon errors pass no handle
   echo htmlentities($e['message']);
 }
+?>
