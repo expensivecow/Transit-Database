@@ -57,6 +57,16 @@ create table OwnedVehicles(
 	Model char(40),
 	Age int,
 	BranchID char(40),
+	primary key(VehicleID)
+);
+
+create table Customers(
+	Name char(40),
+	PhoneNumber int,
+	Address char(40),
+	Username char(40),
+	Password char(40),
+	
 	
 
 	
