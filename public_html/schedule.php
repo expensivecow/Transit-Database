@@ -1,4 +1,4 @@
-<?php session_save_path("/home/f/f2r8/php");
+<?php session_save_path("/home/p/p2n8/php");
   session_start();?>
   <head>
     <meta charset="utf-8">
@@ -84,55 +84,34 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>Firstname</th>
-              <th>Lastname</th>
-              <th>Email</th>
+              <th>Transit ID</th>
+              <th>Arrivals</th>
+              <th>Departures</th>
+              <th>Destination</th>
+              <th>Travel Time</th>
             </tr>
           </thead>
         <?php
-        echo "Balance is $";
         $usern = $_SESSION['username'];
         $conn = oci_connect("ora_p2n8", "a36523124", "ug");
-        $results = oci_parse($conn, "select credit from customers where username = '$usern'");
+        $results = oci_parse($conn, "select * from schedule");
         oci_execute($results);
         while ($row = oci_fetch_array($results, OCI_BOTH)) {
-          echo "<tr><td>" . " " . $row["CREDIT"] . " </td></tr>";
+          echo "<tbody><tr><td>" . $row["TRANSITID"] . " </td><td>"  . $row["ARRIVALS"] . " </td>
+          <td>" . $row["DEPARTURES"] . " </td><td>" . $row["DESTINATION"] . " </td><td>" . $row["TRAVELTIME"] . " </td></tr></tbody>";
         }
+        /*
+        $results = oci_parse($conn, "select * from customers");
+        oci_execute($results);
+        while ($row = oci_fetch_array($results, OCI_BOTH)) {
+          echo "<tbody><tr><td>" . $row["USERNAME"] . " </td><td>"  . $row["USERNAME"] . " </td>
+          <td>" . $row["USERNAME"] . " </td><td>" . $row["USERNAME"] . " </td><td>" . $row["USERNAME"] . " </td></tr></tbody>";
+        }
+        */
         oci_close($conn);
         ?>
-        </font></b>
-      </div>
-    </div>
-      <div class="container">
-        <h2>Bus Schedule</h2>       
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Firstname</th>
-              <th>Lastname</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>John</td>
-              <td>Doe</td>
-              <td>john@example.com</td>
-            </tr>
-            <tr>
-              <td>Mary</td>
-              <td>Moe</td>
-              <td>mary@example.com</td>
-            </tr>
-            <tr>
-              <td>July</td>
-              <td>Dooley</td>
-              <td>july@example.com</td>
-            </tr>
-          </tbody>
         </table>
       </div>
-
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
