@@ -1,4 +1,4 @@
-<form method="POST" action="index.html">
+<form method="POST" action="">
 <p><input type="submit" value="Reset" name="reset"></p>
 </form>
 
@@ -53,7 +53,7 @@ if ($db_conn) {
     
   if ($_POST && $success) {
     //POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-    header("location: register.php");
+    header("location: index.php");
   } else {
     // Select data...
     $result = executePlainSQL("select * from customers");
