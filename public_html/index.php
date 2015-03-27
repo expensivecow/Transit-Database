@@ -1,4 +1,4 @@
-<?php session_save_path("/home/f/f2r8/php");
+<?php session_save_path("/home/h/h3g8/php");
   session_start();?>
 <?php if(!isset($_SESSION['username'])) : ?>
   <head>
@@ -11,7 +11,7 @@
 
     <title>CPSC304 Project</title>
     <!-- Bootstrap -->
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="starter-template.css" rel="stylesheet">
 <style></style> 
 
