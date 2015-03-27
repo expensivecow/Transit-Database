@@ -1,4 +1,4 @@
-<?php session_save_path("/home/p/p2n8/php");
+<?php session_save_path("/home/f/f2r8/php");
   session_start();?>
   <head>
     <meta charset="utf-8">
@@ -43,10 +43,10 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.php">Home</a></li>
-            <li><a href="./Schedule.php">Schedule</a></li>
+            <li><a href="./schedule.php">Schedule</a></li>
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="http://www.omfgdogs.com">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -70,7 +70,7 @@
             <li><a href="schedule.php">Schedule</a></li>
             <li><a href="register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="http://www.omfgdogs.com">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="signout.php">Sign Out</a></li>

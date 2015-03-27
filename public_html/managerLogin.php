@@ -1,4 +1,4 @@
-<?php session_save_path("/home/p/p2n8/php");
+<?php session_save_path("/home/f/f2r8/php");
   session_start();?>
   <head>
     <meta charset="utf-8">
@@ -43,7 +43,7 @@
             <li><a href="#Schedule">Schedule</a></li>
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="http://www.omfgdogs.com">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -165,7 +165,7 @@ if ($db_conn) {
         $passw = $_POST['password'];
 
       //oci_execute(,OCI_DEFAULT);
-      $result = executePlainSQL("select username from customers where username = '$users' and password = '$passw'");
+      $result = executePlainSQL("select username from employee e, manager m where e.username = '$users' and e.password = '$passw' and m.sin = e.sin");
       $numrows = oci_fetch_all($result, $res);
       if($numrows == 0){
         echo "Invalid User or Password.";

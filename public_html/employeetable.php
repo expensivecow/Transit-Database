@@ -34,7 +34,7 @@
             <ul class="nav navbar-nav">
               <li><a href="main">Home</a></li>
               <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li><a href="http://www.omfgdogs.com">Contact</a></li>
               <li><a href="employeetable.php">Employee Table</a></li>
             </ul>
           </div><!--/.nav-collapse -->

@@ -79,14 +79,13 @@ create table employee(
 	wage number,
 	jobt varchar2(10),
 	works varchar2(10),
-	primary key(sin)
+	primary key(sin, username)
 );
 
 insert into employee  values(747565334, 'Jannina Valencia', 7785433343, '678 Rose St Vancouver', 'jval25', 'dalevr', 7000, 'bus driver', 'mwf');
 insert into employee  values(765654234, 'April Green', 6046768890, '6718 Carnation St Burnaby', 'aprgr', '78htvh', 7400, 'taxi driver', 'mtwthf');
 insert into employee  values(732098789, 'Morgan Free', 7785463343, '3468 Clark St Vancouver', 'freeee', '78bsgdk', 5000, 'operator', 'mtwfsat');
 insert into employee  values(745909897, 'Leslie Wong', 7784230186, '1223 Sasamat St Richmond', 'lwongg', 'afgfeirg', 4500, 'maintenance', 'mtwthfsun');
-insert into employee  values(730988123, 'Felicity Wishes', 604019223, '9888 Smithe St Coquitlam', 'jval25', 'dalevr', 7000, 'bus driver', 'mtthf');
 
 -- Manager table
 
@@ -97,13 +96,7 @@ create table manager(
 	references Employee(SIN)
 );
 
-insert into manager values(717561829);
-insert into manager values(782286272);
-insert into manager values(710928287);
-insert into manager values(716898221);
-insert into manager values(762981822);
-insert into manager values(722341822);
-
+insert into manager values(747565334);
 
 -- Schedule Table
 

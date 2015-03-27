@@ -1,0 +1,31 @@
+CREATE DATABASE Transit;
+USE Transit;
+
+
+CREATE TABLE transit_user(
+	PhoneNumber int not null,
+	Name char(40) not null,
+	Address char(40) not null,
+	Username char(40) not null,
+	Password char(40) not null,
+	PRIMARY KEY(Name, PhoneNumber)
+);
+INSERT INTO transit_user VALUE
+(6044201533, "Chris Lu", "123 Fake St", "PoWei", "Abcdefgh");
+INSERT INTO transit_user VALUE
+(6044211453, "Erik Fu", "321 Not Fake St", "Bloop", "Poop");
+INSERT INTO transit_user VALUE
+(7789120394, "Random Person", "Altera St", "Altera", "DE2222222");
+INSERT INTO transit_user VALUE
+(6043212413, "Random Hippo", "Quartus II Sucks", "Quartus2", "Password");
+
+CREATE TABLE Employee(
+	SIN int not null,
+	Name char(40) not null,
+	PhoneNumber int not null,
+	Address char(40) not null,
+	Username char(40) not null,
+	Password char(40) not null,
+	Wage int not null,
+	
+);

@@ -1,4 +1,4 @@
-<?php session_save_path("/home/p/p2n8/php");
+<?php session_save_path("/home/f/f2r8/php");
   session_start();?>
   <head>
     <meta charset="utf-8">
@@ -43,7 +43,7 @@
             <li><a href="#Schedule">Schedule</a></li>
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="http://www.omfgdogs.com">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
