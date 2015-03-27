@@ -70,7 +70,7 @@
 
 <?php
 if(isset($_SESSION['username'])){
-      header("location: index.php");
+      header("location: client.php");
     }
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
