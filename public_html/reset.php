@@ -47,6 +47,51 @@ if ($db_conn) {
     echo "<br> creating new table <br>";
     executePlainSQL("create table customers (username varchar2(30), address varchar2(30), password varchar2(30), pnumber varchar2(30),
      credit number, primary key (username))");
+
+    echo "<br> dropping table <br>";
+    executePlainSQL("Drop table employees");
+
+    // Create new table...
+    echo "<br> creating new table <br>";
+    executePlainSQL("create table employees (username varchar2(30), address varchar2(30), password varchar2(30), pnumber varchar2(30),
+     credit number, primary key (username))");
+
+    echo "<br> dropping table <br>";
+    executePlainSQL("Drop table vehicles");
+
+    // Create new table...
+    echo "<br> creating new table <br>";
+    executePlainSQL("create table vehicles (username varchar2(30), address varchar2(30), password varchar2(30), pnumber varchar2(30),
+     credit number, primary key (username))");
+
+    echo "<br> dropping table <br>";
+    executePlainSQL("Drop table managers");
+
+    // Create new table...
+    echo "<br> creating new table <br>";
+    executePlainSQL("create table managers (username varchar2(30), address varchar2(30), password varchar2(30), pnumber varchar2(30),
+     credit number, primary key (username))");
+
+    echo "<br> dropping table <br>";
+    executePlainSQL("Drop table branches");
+
+    // Create new table...
+    echo "<br> creating new table <br>";
+    executePlainSQL("create table branches (username varchar2(30), address varchar2(30), password varchar2(30), pnumber varchar2(30),
+     credit number, primary key (username))");
+
+    echo "<br> dropping table <br>";
+    executePlainSQL("Drop table schedules");
+
+    // Create new table...
+    echo "<br> creating new table <br>";
+    executePlainSQL("create table schedules (username varchar2(30), address varchar2(30), password varchar2(30), pnumber varchar2(30),
+     credit number, primary key (username))");
+
+    echo "<br> creating new table <br>";
+    executePlainSQL("create table schedules (username varchar2(30), address varchar2(30), password varchar2(30), pnumber varchar2(30),
+     credit number, primary key (username))");
+
     OCICommit($db_conn);
 
     }
