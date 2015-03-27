@@ -1,7 +1,7 @@
 -- CS304 TABLES FOR TRANSPORTATION SYSTEM DATABASE
 
 
-create table transit_user(
+create table TransitUser(
 	Name char(40),
 	PhoneNumber int,
 	Address char(40),
@@ -22,7 +22,7 @@ create table Employee(
 	WorkSchedule char(40),
 	primary key(SIN, Name, PhoneNumber),
 	foreign key(Name, PhoneNumber)
-	references transit_user(Name, PhoneNumber)
+	references TransitUser(Name, PhoneNumber)
 );
 
 create table Manager(
@@ -57,6 +57,46 @@ create table OwnedVehicles(
 	Model char(40),
 	Age int,
 	BranchID char(40),
+	primary key(VehicleID)
+);
+
+create table Customers(
+	Name char(40),
+	PhoneNumber int,
+	Address char(40),
+	Username char(40),
+	Password char(40),
+	AccountCredit int,
+	primary key(Name,PhoneNumber)
+	foreign key(Name, PhoneNumber)
+	references TransitUser(Name, PhoneNumber)
+);
+
+
+-- INSERTING VALUES INTO THE TABLES
+
+
+-- Transit User table
+
+insert into TransitUser values('Bob Right', 7786546588, '340 Agnes St New Westminster', 'bright', '8h6hdh');
+insert into TransitUser values('Neil Armstrong', 6046557816, '4567 Drake St Vancouver', 'narms', '7nshka');
+insert into TransitUser values('Louis Smith', 6045551086, '32112 Cornwood St Coquitlam', 'lsmith', '7jhah');
+insert into TransitUser values('Flint Stone', 6045017683, '1222 Knight St Vancouver', 'flints', '6ndghps');
+insert into TransitUser values('Ann Smythe', 6049807692, '1212 Cordova St North Vancouver', 'anne', 'kadhdo');
+insert into TransitUser values('Bob Left', 7786446588, '343 Agnes St New Westminster', 'leftb', 'asdd4');
+
+
+-- Employee Table
+
+insert into Employee table values(7475653345, 'Jannina Valencia', 7785433343, '678 Rose St Vancouver', 'jval25', 'dalevr', 7000, 'bus driver', 'mwf');
+insert into Employee table values(7475653345, 'Jannina Valencia', 7785433343, '678 Rose St Vancouver', 'jval25', 'dalevr', 7000, 'bus driver', 'mwf');
+
+
+
+
+
+
+	
 	
 
 	
