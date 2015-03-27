@@ -113,7 +113,8 @@ insert into Branch  values('b4541', 'Richmond');
 
 -- Schedule Table
 
-insert into Schedule values('t1292', 
+insert into Schedule values('t1292', insert into Schedule values('t1292', to_timestamp('2015/03/29 08:20', 'YYYY/MM/DD HH24 MI'), to_timestamp('2015/03/29 08:30', 'YYYY/MM/DD HH24 MI'), 'Commercial Bdway', 50);
+insert into Schedule values('t6143', to_timestamp('2015/03/29 05:30', 'YYYY/MM/DD HH24 MI'), to_timestamp('2015/03/29 05:38', 'YYYY/MM/DD HH24 MI'), 'UBC', 45);
 
 
 
