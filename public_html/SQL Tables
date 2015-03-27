@@ -73,60 +73,73 @@ create table Customers(
 );
 
 
--- INSERTING VALUES numberO THE TABLES
+-- INSERTING VALUES INTO THE TABLES
 
 
 -- Transit User table
 
-insert numbero TransitUser values('Bob Right', 7786546588, '340 Agnes St New Westminster', 'bright', '8h6hdh');
-insert numbero TransitUser values('Neil Armstrong', 6046557816, '4567 Drake St Vancouver', 'narms', '7nshka');
-insert numbero TransitUser values('Louis Smith', 6045551086, '32112 Cornwood St Coquitlam', 'lsmith', '7jhah');
-insert numbero TransitUser values('Flnumber Stone', 6045017683, '1222 Knight St Vancouver', 'flnumbers', '6ndghps');
-insert numbero TransitUser values('Ann Smythe', 6049807692, '1212 Cordova St North Vancouver', 'anne', 'kadhdo');
-insert numbero TransitUser values('Bob Left', 7786446588, '343 Agnes St New Westminster', 'leftb', 'asdd4');
+insert into TransitUser values('Bob Right', 7786546588, '340 Agnes St New Westminster', 'bright', '8h6hdh');
+insert into TransitUser values('Neil Armstrong', 6046557816, '4567 Drake St Vancouver', 'narms', '7nshka');
+insert into TransitUser values('Louis Smith', 6045551086, '32112 Cornwood St Coquitlam', 'lsmith', '7jhah');
+insert into TransitUser values('Flint Stone', 6045017683, '1222 Knight St Vancouver', 'flints', '6ndghps');
+insert into TransitUser values('Ann Smythe', 6049807692, '1212 Cordova St North Vancouver', 'anne', 'kadhdo');
+insert into TransitUser values('Bob Left', 7786446588, '343 Agnes St New Westminster', 'leftb', 'asdd4');
 
 
 -- Employee Table
 
-insert numbero Employee  values(747565334, 'Jannina Valencia', 7785433343, '678 Rose St Vancouver', 'jval25', 'dalevr', 7000, 'bus driver', 'mwf');
-insert numbero Employee  values(765654234, 'April Green', 6046768890, '6718 Carnation St Burnaby', 'aprgr', '78htvh', 7400, 'taxi driver', 'mtwthf');
-insert numbero Employee  values(732098789, 'Morgan Free', 7785463343, '3468 Clark St Vancouver', 'freeee', '78bsgdk', 5000, 'operator', 'mtwfsat');
-insert numbero Employee  values(745909897, 'Leslie Wong', 7784230186, '1223 Sasamat St Richmond', 'lwongg', 'afgfeirg', 4500, 'manumberenance', 'mtwthfsun');
-insert numbero Employee  values(730988123, 'Felicity Wishes', 604019223, '9888 Smithe St Coquitlam', 'jval25', 'dalevr', 7000, 'bus driver', 'mtthf');
+insert into Employee  values(747565334, 'Jannina Valencia', 7785433343, '678 Rose St Vancouver', 'jval25', 'dalevr', 7000, 'bus driver', 'mwf');
+insert into Employee  values(765654234, 'April Green', 6046768890, '6718 Carnation St Burnaby', 'aprgr', '78htvh', 7400, 'taxi driver', 'mtwthf');
+insert into Employee  values(732098789, 'Morgan Free', 7785463343, '3468 Clark St Vancouver', 'freeee', '78bsgdk', 5000, 'operator', 'mtwfsat');
+insert into Employee  values(745909897, 'Leslie Wong', 7784230186, '1223 Sasamat St Richmond', 'lwongg', 'afgfeirg', 4500, 'maintenance', 'mtwthfsun');
+insert into Employee  values(730988123, 'Felicity Wishes', 604019223, '9888 Smithe St Coquitlam', 'jval25', 'dalevr', 7000, 'bus driver', 'mtthf');
 
 -- Manager table
 
-insert numbero Manager values(717561829, 'mtwthfsatsun', 'm8788');
-insert numbero Manager values(782286272, 'mtthfsun', 'm6672');
-insert numbero Manager values(710928287, 'twthsatsun', 'm1922');
-insert numbero Manager values(716898221, 'mtfsatsun', 'm9828');
-insert numbero Manager values(762981822, 'wthfsatsun', 'm5434');
+insert into Manager values(717561829, 'mtwthfsatsun', 'm8788');
+insert into Manager values(782286272, 'mtthfsun', 'm6672');
+insert into Manager values(710928287, 'twthsatsun', 'm1922');
+insert into Manager values(716898221, 'mtfsatsun', 'm9828');
+insert into Manager values(762981822, 'wthfsatsun', 'm5434');
 
 -- Branch Table
 
-insert numbero Branch  values('b7817', 'Burnaby');
-insert numbero Branch  values('b1223', 'Vancouver');
-insert numbero Branch  values('b6783', 'Burnaby');
-insert numbero Branch  values('b2345', 'Coquitlam');
-insert numbero Branch  values('b7262', 'Burnaby');
-insert numbero Branch  values('b4541', 'Richmond');
+insert into Branch  values('b7817', 'Burnaby');
+insert into Branch  values('b1223', 'Vancouver');
+insert into Branch  values('b6783', 'Burnaby');
+insert into Branch  values('b2345', 'Coquitlam');
+insert into Branch  values('b7262', 'Burnaby');
+insert into Branch  values('b4541', 'Richmond');
 
 -- Schedule Table
 
-insert numbero Schedule values('t1292', insert numbero Schedule values('t1292', to_timestamp('2015/03/29 08:20', 'YYYY/MM/DD HH24 MI'), to_timestamp('2015/03/29 08:30', 'YYYY/MM/DD HH24 MI'), 'Commercial Bdway', 50);
-insert numbero Schedule values('t6143', to_timestamp('2015/03/29 05:30', 'YYYY/MM/DD HH24 MI'), to_timestamp('2015/03/29 05:38', 'YYYY/MM/DD HH24 MI'), 'UBC', 45);
+insert into Schedule values('t1292', to_timestamp('2015/03/29 08:20', 'YYYY/MM/DD HH24 MI'), to_timestamp('2015/03/29 08:30', 'YYYY/MM/DD HH24 MI'), 'Commercial Bdway', 50);
+insert into Schedule values('t6143', to_timestamp('2015/03/29 05:30', 'YYYY/MM/DD HH24 MI'), to_timestamp('2015/03/29 05:38', 'YYYY/MM/DD HH24 MI'), 'UBC', 45);
+insert into Schedule values('t8767', to_timestamp('2015/03/29 21:30', 'YYYY/MM/DD HH24 MI'), to_timestamp('2015/03/29 21:39', 'YYYY/MM/DD HH24 MI'), 'Coq Stn', 33);
+insert into Schedule values('t6715', to_timestamp('2015/03/29 22:05', 'YYYY/MM/DD HH24 MI'), to_timestamp('2015/03/29 22:35', 'YYYY/MM/DD HH24 MI'), 'Granville', 42);
+insert into Schedule values('t4322', to_timestamp('2015/03/29 10:15', 'YYYY/MM/DD HH24 MI'), to_timestamp('2015/03/29 10:20', 'YYYY/MM/DD HH24 MI'), 'Lonsdale Quay', 20);
+insert into Schedule values('t6715', to_timestamp('2015/03/29 22:05', 'YYYY/MM/DD HH24 MI'), to_timestamp('2015/03/29 22:35', 'YYYY/MM/DD HH24 MI'), 'Granville', 42);
 
 
+-- OwnedVehicles table
+
+insert into OwnedVehicles values('v7167', 50, 'bus', 2.75, 'mod788', 10, 'b4541');
+insert into OwnedVehicles values('v4212', 5, 'taxi', 5.00, 'mod134', 3, 'b2345');
+insert into OwnedVehicles values('v9898', 100, 'train', 4.75, 'mod334', 12, 'b6737');
+insert into OwnedVehicles values('v3452', 40, 'seabus', 3.50, 'mod1221', 15, 'b8765');
+insert into OwnedVehicles values('v7167', 50, 'bus', 2.75, 'mod788', 10, 'b4541');
+insert into OwnedVehicles values('v1222', 100,'train', 4.75, 'mod3321', 7, 'b6766');
 
 
+-- Customers table
 
+insert into Customers values('Bob Right', 7786546588, '340 Agnes St New Westminster', 'bright', '8h6hdh', 30);
+insert into Customers values('Neil Armstrong', 6046557816, '4567 Drake St Vancouver', 'narms', '7nshka', 0);
+insert into Customers values('Louis Smith', 6045551086, '32112 Cornwood St Coquitlam', 'lsmith', '7jhah', 21);
+insert into Customers values('Flint Stone', 6045017683, '1222 Knight St Vancouver', 'flints', '6ndghps', 100);
+insert into Customers values('Ann Smythe', 6049807692, '1212 Cordova St North Vancouver', 'anne', 'kadhdo', 65);
+insert into Customers values('Bob Left', 7786446588, '343 Agnes St New Westminster', 'leftb', 'asdd4', 40);
 
-
-
-
-
-
-	
 	
 
 	
