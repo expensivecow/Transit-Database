@@ -1,4 +1,4 @@
-<?php session_save_path("/home/p/p2n8/php");
+<?php session_save_path("/home/f/f2r8/php");
   session_start();?>
 <?php if(!isset($_SESSION['username'])) : ?>
   <head>
@@ -31,10 +31,10 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.php">Home</a></li>
-            <li><a href="#Schedule">Schedule</a></li>
+            <li><a href="schedule.php">Schedule</a></li>
             <li><a href="register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="http://www.omfgdogs.com">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -54,7 +54,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../js/bootstrap.min.js"></script>
   </body>
-<?php elseif($_SESSION("permissions") = "USER"):?>
+<?php elseif($_SESSION['permissions'] == 'EMPLOYEE'):?>
 
     <head>
     <meta charset="utf-8">
@@ -89,7 +89,7 @@
             <li><a href="schedule.php">Schedule</a></li>
             <li><a href="register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="http://www.omfgdogs.com">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="signout.php">Sign Out</a></li>
@@ -99,16 +99,19 @@
     </nav>
     <div class="container">
       <div class="starter-template">
-        <font size ="4"><?php echo "<center><p class='lead2'>Welcome ". $_SESSION['username'] . "</p></center>";?></font>
+        <font size ="6"><?php echo "<center><p class='lead2'>Welcome ". $_SESSION['username'] . "!" . "</p></center>";?></font>
         <font size ="7"><b>
+        <p class="lead">What would you like to do?</p>
+        <p class="lead"><a href="./balance.php"> Change Balance For a Customer </a></p>
+        <p class="lead"><a href="./employeeinfo.php">  Check Your Information </a></p>
+        <p class="lead"><a href="./vehicle.php"> Change Vehicle Schedule Times </a></p>
         <?php
-        echo "Balance is $";
         $usern = $_SESSION['username'];
         $conn = oci_connect("ora_p2n8", "a36523124", "ug");
-        $results = oci_parse($conn, "select credit from customers where username = '$usern'");
+        $results = oci_parse($conn, "select * from employee where username = '$usern'");
         oci_execute($results);
         while ($row = oci_fetch_array($results, OCI_BOTH)) {
-          echo "<tr><td>" . " " . $row["CREDIT"] . " </td></tr>";
+          echo "<tr><td>" . " " . $row["sin"] . " </td></tr>";
         }
         oci_close($conn);
         ?>
@@ -120,8 +123,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../js/bootstrap.min.js"></script>
   </body>
-
-<?php else:?>
+<?php elseif($_SESSION['permissions'] == 'USER'):?>
 
     <head>
     <meta charset="utf-8">
@@ -156,7 +158,7 @@
             <li><a href="schedule.php">Schedule</a></li>
             <li><a href="register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="http://www.omfgdogs.com">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="signout.php">Sign Out</a></li>
@@ -166,29 +168,16 @@
     </nav>
     <div class="container">
       <div class="starter-template">
-        <font size ="4"><?php echo "<center><p class='lead2'>Welcome ". $_SESSION['username'] . "</p></center>";?></font>
+        <font size ="6"><?php echo "<center><p class='lead2'>Welcome ". $_SESSION['username'] . "</p></center>";?></font>
         <font size ="7"><b>
         <?php
-        echo "Wage is currently $";
+        echo "Balance is $";
         $usern = $_SESSION['username'];
         $conn = oci_connect("ora_p2n8", "a36523124", "ug");
-        $results = oci_parse($conn, "select wage from employees where username = '$usern'");
+        $results = oci_parse($conn, "select credit from customers where username = '$usern'");
         oci_execute($results);
         while ($row = oci_fetch_array($results, OCI_BOTH)) {
-          echo "<tr><td>" . " " . $row["WAGE"] . " </td></tr>\n";
-        }
-        oci_close($conn);
-        ?>
-        </font></b>
-        <font size ="7"><b>
-        <?php
-        echo "You are working these days this week:";
-        $usern = $_SESSION['username'];
-        $conn = oci_connect("ora_p2n8", "a36523124", "ug");
-        $results = oci_parse($conn, "select workschedule from employees where username = '$usern'");
-        oci_execute($results);
-        while ($row = oci_fetch_array($results, OCI_BOTH)) {
-          echo "<tr><td>" . " " . $row["WORKSCHEDULE"] . " </td></tr>\n";
+          echo "<tr><td>" . " " . $row["CREDIT"] . " </td></tr>";
         }
         oci_close($conn);
         ?>
