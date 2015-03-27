@@ -22,6 +22,8 @@
   </head>
 
   <body>
+  
+  <!-- Adding Navigation Bar-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -35,15 +37,11 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Home</a></li>
+            <li class="active"><a href="index.php">Home</a></li>
             <li><a href="#Schedule">Schedule</a></li>
-            <li><a href="register.php">Register</a></li>
+            <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
             <li><a href="#contact">Contact</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-          <li><a href="#Balance">Balance</a></li>
-          <li><a href="#Logout">Sign Out</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
