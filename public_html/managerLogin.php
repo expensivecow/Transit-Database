@@ -52,7 +52,7 @@
       <div class="starter-template">
     <div class="container">
 
-      <form class="form-signin" action="customerLogin.php" method="POST">
+      <form class="form-signin" action="managerLogin.php" method="POST">
         <h2 class="form-signin-heading">Please sign in (Manager)</h2>
         <label for="inputEmail" class="sr-only">Username</label>
         <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
@@ -165,7 +165,7 @@ if ($db_conn) {
         $passw = $_POST['password'];
 
       //oci_execute(,OCI_DEFAULT);
-      $result = executePlainSQL("select username from employee e, manager m where e.username = '$users' and e.password = '$passw' and m.sin = e.sin");
+      $result = executePlainSQL("select m.username from employee e, manager m where m.username = '$users' and e.password = '$passw' and m.username = e.username");
       $numrows = oci_fetch_all($result, $res);
       if($numrows == 0){
         echo "Invalid User or Password.";
@@ -175,7 +175,7 @@ if ($db_conn) {
         echo $_SESSION['username'];
         $_SESSION['permissions'] = "MANAGER";
         echo $_SESSION['permissions'];
-        header("location: index.php");
+        header("location: manager.php");
       }
       //echo "Printing number of items: " . $result;
     }

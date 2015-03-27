@@ -1,3 +1,6 @@
+<?php session_save_path("/home/h/h3g8/php");
+  session_start();?>
+<?php if(($_SESSION['permissions'] == "MANAGER")) : ?>
 <html lang = "en">
 <head>
 <meta charset="utf-8">
@@ -37,6 +40,11 @@
               <li><a href="#contact">Contact</a></li>
               <li><a href="employeetable.php">Employee Table</a></li>
             </ul>
+
+          	<ul class="nav navbar-nav navbar-right">
+              <li><a href="changepass.php">Change Password</a></li>
+              <li><a href="signout.php">Sign Out</a></li>
+          	</ul>
           </div><!--/.nav-collapse -->
         </div>
       </nav>
@@ -894,4 +902,6 @@ if ($db_conn) {
 
 </div>
 </body>
-
+<?php else : 
+echo "ACCESS DENIED";
+endif;?>
