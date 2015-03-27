@@ -1,4 +1,5 @@
-
+<?php session_save_path("/home/p/p2n8/php");
+  session_start();?>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,7 +39,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Home</a></li>
+            <li class="active"><a href="index.php">Home</a></li>
             <li><a href="#Schedule">Schedule</a></li>
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
@@ -51,7 +52,7 @@
       <div class="starter-template">
     <div class="container">
 
-      <form class="form-signin" action='' method="POST">
+      <form class="form-signin" action="customerLogin.php" method="POST">
         <h2 class="form-signin-heading">Please sign in (Customer)</h2>
         <label for="inputEmail" class="sr-only">Username</label>
         <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
@@ -68,7 +69,9 @@
   </body>
 
 <?php
-
+if(isset($_SESSION['username'])){
+      header("location: client.php");
+    }
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
 
@@ -145,7 +148,7 @@ function printResult($result) { //prints results from a select statement
 
   while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
     echo "<tr><td>" . " " . $row["USERNAME"] . " </td><td>" . " " . $row["ADDRESS"] . " </td><td>" . " " . $row["PASSWORD"] . "</td><td>"
-      . " " . $row["PNUMBER"] . "</td></tr>"; //or just use "echo $row[0]" 
+      . " " . $row["PHONE"] . "</td></tr>"; //or just use "echo $row[0]" 
   }
   echo "</table>";
 
@@ -153,17 +156,28 @@ function printResult($result) { //prints results from a select statement
 
 // Connect Oracle...
 if ($db_conn) {
+    if (!is_writable(session_save_path())) {
+      echo 'Session path "'.session_save_path().'" is not writable for PHP!'; 
+    }
     if(array_key_exists('Login', $_POST)) {
         
         $users = $_POST['username'];
         $passw = $_POST['password'];
 
       //oci_execute(,OCI_DEFAULT);
-      //echo "here: " . oci_num_rows($result);
       $result = executePlainSQL("select username from customers where username = '$users' and password = '$passw'");
-      //echo '<pre>'.print_r($result,1).'</pre>';
+      $numrows = oci_fetch_all($result, $res);
+      if($numrows == 0){
+        echo "Invalid User or Password.";
+      }
+      if($numrows == 1){
+        $_SESSION['username'] = $users;
+        echo $_SESSION['username'];
+        $_SESSION['permissions'] = "USER";
+        echo $_SESSION['permissions'];
+        header("location: index.php");
+      }
       //echo "Printing number of items: " . $result;
-      printResult($result);
     }
     OCICommit($db_conn);
 
@@ -176,3 +190,4 @@ if ($db_conn) {
   $e = OCI_Error(); // For OCILogon errors pass no handle
   echo htmlentities($e['message']);
 }
+?>

@@ -37,7 +37,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Home</a></li>
+            <li class="active"><a href="index.php">Home</a></li>
             <li><a href="#Schedule">Schedule</a></li>
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
@@ -198,7 +198,7 @@ if ($db_conn) {
       $alltuples = array (
         $tuple
       );
-      executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3, :bind4, null)", $alltuples);
+      executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3, :bind4, 0)", $alltuples);
       OCICommit($db_conn);
     }
 
