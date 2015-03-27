@@ -4,13 +4,13 @@ drop table Employee;
 drop table Manager;
 drop table Branch;
 drop table Schedule;
-drop table OwnedVehcles;
+drop table OwnedVehicles;
 drop table Customers;
 
 create table TransitUser(
 	Name varchar2(40),
 	PhoneNumber number,
-	Address varchar2(40),
+	Address varchar2(70),
 	Username varchar2(40),
 	Password varchar2(40),
 	primary key(Name, PhoneNumber)
@@ -19,25 +19,26 @@ create table TransitUser(
 create table Employee(
 	SIN number,
 	Name varchar2(40),
-	PhoneNumber number,
-	Address varchar2(40),
+	PhoneNumber int,
+	Address varchar2(70),
 	Username varchar2(40),
 	Password varchar2(40),
 	Wage number,
 	JobType varchar2(40),
 	WorkSchedule varchar2(40),
-	primary key(SIN, Name, PhoneNumber),
-	foreign key(Name, PhoneNumber)
-	references TransitUser(Name, PhoneNumber)
+	primary key(SIN)
+    -- from (SIN, Name, PhoneNumber)
+	-- foreign key(Name, PhoneNumber)
+	-- references TransitUser(Name, PhoneNumber)
 );
 
 create table Manager(
 	SIN number,
 	EmployeeSchedule varchar2(40),
 	AdminAccessID varchar2(40),
-	primary key(SIN),
-	foreign key(SIN)
-	references Employee(SIN)
+	primary key(SIN, AdminAccessID)
+	-- foreign key(SIN)
+	-- references Employee(SIN)
 );
 
 create table Branch(
@@ -50,7 +51,7 @@ create table Schedule(
 	TransitID varchar2(40),
 	Arrivals timestamp,
 	Departures timestamp,
-	Destination varchar2(40),
+	Destination char(40),
 	TravelTime number,
 	primary key(TransitID)
 );
@@ -69,19 +70,17 @@ create table OwnedVehicles(
 create table Customers(
 	Name varchar2(40),
 	PhoneNumber number,
-	Address varchar2(40),
+	Address varchar2(70),
 	Username varchar2(40),
 	Password varchar2(40),
 	AccountCredit number,
-	primary key(Name,PhoneNumber)
+	primary key(Name,PhoneNumber),
 	foreign key(Name, PhoneNumber)
 	references TransitUser(Name, PhoneNumber)
 );
 
 
 -- INSERTING VALUES INTO THE TABLES
-
-
 -- Transit User table
 
 insert into TransitUser values('Bob Right', 7786546588, '340 Agnes St New Westminster', 'bright', '8h6hdh');
@@ -98,7 +97,7 @@ insert into Employee  values(747565334, 'Jannina Valencia', 7785433343, '678 Ros
 insert into Employee  values(765654234, 'April Green', 6046768890, '6718 Carnation St Burnaby', 'aprgr', '78htvh', 7400, 'taxi driver', 'mtwthf');
 insert into Employee  values(732098789, 'Morgan Free', 7785463343, '3468 Clark St Vancouver', 'freeee', '78bsgdk', 5000, 'operator', 'mtwfsat');
 insert into Employee  values(745909897, 'Leslie Wong', 7784230186, '1223 Sasamat St Richmond', 'lwongg', 'afgfeirg', 4500, 'maintenance', 'mtwthfsun');
-insert into Employee  values(730988123, 'Felicity Wishes', 604019223, '9888 Smithe St Coquitlam', 'jval25', 'dalevr', 7000, 'bus driver', 'mtthf');
+insert into Employee  values(730988123, 'Felicity Wishes', 6040192236, '9888 Smithe St Coquitlam', 'fwishhs', '5fsrjyd', 7600, 'manager', 'mtthf');
 
 -- Manager table
 
@@ -133,7 +132,7 @@ insert into OwnedVehicles values('v7167', 50, 'bus', 2.75, 'mod788', 10, 'b4541'
 insert into OwnedVehicles values('v4212', 5, 'taxi', 5.00, 'mod134', 3, 'b2345');
 insert into OwnedVehicles values('v9898', 100, 'train', 4.75, 'mod334', 12, 'b6737');
 insert into OwnedVehicles values('v3452', 40, 'seabus', 3.50, 'mod1221', 15, 'b8765');
-insert into OwnedVehicles values('v7167', 50, 'bus', 2.75, 'mod788', 10, 'b4541');
+insert into OwnedVehicles values('v7187', 50, 'bus', 2.75, 'mod656', 11, 'b4546');
 insert into OwnedVehicles values('v1222', 100,'train', 4.75, 'mod3321', 7, 'b6766');
 
 
@@ -146,6 +145,22 @@ insert into Customers values('Flint Stone', 6045017683, '1222 Knight St Vancouve
 insert into Customers values('Ann Smythe', 6049807692, '1212 Cordova St North Vancouver', 'anne', 'kadhdo', 65);
 insert into Customers values('Bob Left', 7786446588, '343 Agnes St New Westminster', 'leftb', 'asdd4', 40);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 	
 
 	
