@@ -54,8 +54,9 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../js/bootstrap.min.js"></script>
   </body>
-<?php elseif($_SESSION("permissions") = "USER"):?>
 
+<?php elseif ($_SESSION("permissions") == "EMPLOYEE"):?>
+	
     <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -120,7 +121,6 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../js/bootstrap.min.js"></script>
   </body>
-
 <?php else:?>
 
     <head>
@@ -169,26 +169,13 @@
         <font size ="4"><?php echo "<center><p class='lead2'>Welcome ". $_SESSION['username'] . "</p></center>";?></font>
         <font size ="7"><b>
         <?php
-        echo "Wage is currently $";
+        echo "Balance is $";
         $usern = $_SESSION['username'];
         $conn = oci_connect("ora_p2n8", "a36523124", "ug");
-        $results = oci_parse($conn, "select wage from employees where username = '$usern'");
+        $results = oci_parse($conn, "select credit from customers where username = '$usern'");
         oci_execute($results);
         while ($row = oci_fetch_array($results, OCI_BOTH)) {
-          echo "<tr><td>" . " " . $row["WAGE"] . " </td></tr>\n";
-        }
-        oci_close($conn);
-        ?>
-        </font></b>
-        <font size ="7"><b>
-        <?php
-        echo "You are working these days this week:";
-        $usern = $_SESSION['username'];
-        $conn = oci_connect("ora_p2n8", "a36523124", "ug");
-        $results = oci_parse($conn, "select workschedule from employees where username = '$usern'");
-        oci_execute($results);
-        while ($row = oci_fetch_array($results, OCI_BOTH)) {
-          echo "<tr><td>" . " " . $row["WORKSCHEDULE"] . " </td></tr>\n";
+          echo "<tr><td>" . " " . $row["CREDIT"] . " </td></tr>";
         }
         oci_close($conn);
         ?>
