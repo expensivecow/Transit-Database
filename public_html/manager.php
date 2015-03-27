@@ -1,20 +1,3 @@
-
-<!--Test Oracle file for UBC CPSC304 2011 Winter Term 2
-  Created by Jiemin Zhang
-  Modified by Simona Radu
-  This file shows the very basics of how to execute PHP commands
-  on Oracle.  
-  specifically, it will drop a table, create a table, insert values
-  update values, and then query for values
- 
-  IF YOU HAVE A TABLE CALLED "tab1" IT WILL BE DESTROYED
-
-  The script assumes you already have a server set up
-  All OCI commands are commands to the Oracle libraries
-  To get the file to work, you must place it somewhere where your
-  Apache server can run it, and you must rename it to have a ".php"
-  extension.  You must also change the username and password on the 
-  OCILogon below to be your ORACLE username and password -->
 <html lang = "en">
 <head>
 <meta charset="utf-8">
@@ -25,7 +8,7 @@
 
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-<link href="starter-template.css" rel="stylesheet">
+<link href="main/starter-template.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <style type="text/css">
@@ -52,17 +35,35 @@
               <li><a href="main">Home</a></li>
               <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
               <li><a href="#contact">Contact</a></li>
+              <li><a href="employeetable.php">Employee Table</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
       </nav>
-
 <div class="container">
 <h1>Manager functions:</h1>
 <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
 <form method="POST" action="manager.php">
 <p><input type="submit" value="Reset" name="reset"></p>
 </form>
+
+<!--
+<form method="POST" action= "manager.php" class="navbar-form navbar-left" >
+  <div class="form-group">
+    <input type="text" name="eSin" class="form-control" placeholder="SIN">
+    <input type="text" name="eName" class="form-control" placeholder="Name"><br>
+    <input type="text" name="ePhone" class="form-control" placeholder="Phone"><br>
+    <input type="text" name="eAddress" class="form-control" placeholder="Address"><br>
+    <input type="text" name="eUsername" class="form-control" placeholder="Username"><br>
+    <input type="text" name="ePassword" class="form-control" placeholder="Password"><br>
+    <input type="text" name="eWage" class="form-control" placeholder="Wage"><br>
+    <input type="text" name="eJobt" class="form-control" placeholder="Job Type"><br>
+    <input type="text" name="eWorks" class="form-control" placeholder="Work Schedule"><br>
+  </div>
+  <br>
+  <button type="submit" name="insertsubmit" class="btn btn-default">Submit</button>
+</form>
+-->
 
 
 <h3>Insert values into employees below:</h3>
@@ -81,8 +82,7 @@
 
 <!--define two variables to pass the value-->
 <input type="submit" value="insert" name="insertsubmit"></p>
-</form>
-
+</form> 
 
 <!-- create a form to pass the values. See below for how to 
 get the values--> 
@@ -117,15 +117,6 @@ get the values-->
 
 <p>
 <font size="2">Selection:</font><br>
-<!--
-<font size="2">SIN:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="eSin" size="6"><br>
-<font size="2">Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="eName" size="18"><br>
-<font size="2">Phone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="ePhone" size="18"><br>
-<font size="2">Address:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="eAddress" size="18"><br>
-<font size="2">Wage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="eWage" size="18"><br>
-<font size="2">Job Type:&nbsp;&nbsp;&nbsp;</font><input type="text" name="eJobt" size="18"><br>
-<font size="2">Work schedule:&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="eWorks" size="18">
--->
 
 <font size="2">&nbsp;SIN:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
 <font size="2">&nbsp;Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
@@ -164,15 +155,53 @@ get the values-->
 <!--define two variables to pass the value-->
 <input type="submit" value="delete" name="deletesubmit"></p>
 </form>
+
+
+<h4> Show current employees' assigned vehicles (JOIN query) </h4>
+<p>
+<form method="POST" action="manager.php">
+<!--refresh page when submit-->
+<!--define two variables to pass the value-->
+<select name="join" size="1">
+  <option value="INNER JOIN" selected="selected">Inner join</option>
+  <option value="LEFT JOIN">Left join</option>
+  <option value="RIGHT JOIN">Right join</option>
+  <option value="FULL JOIN">Full join</option>
+</select>
+<input type="submit" value="Show assigned vehicles" name="joinsubmit"></p>
+</form>
+
+<h4> Show min or max of average wage of employees (Nested aggregation with group-by) </h4>
+<p>
+<form method="POST" action="manager.php">
+<!--refresh page when submit-->
+<!--define two variables to pass the value-->
+<select name="nest" size="1">
+  <option value="MAX" selected="selected">Maximum</option>
+  <option value="MIN">Minimum</option>
+</select>
+<input type="submit" value="Show min/max of average wage" name="nestsubmit"></p>
+</form>
+
+
+<h4> Find employees who have not been assigned to a vehicle (Division Query) </h4>
+<p>
+<form method="POST" action="manager.php">
+<!--refresh page when submit-->
+<!--define two variables to pass the value-->
+<input type="submit" value="divide by job type" name="dividesubmit"></p>
+</form>
+
 </div>
 </body>
+
 <?php
 
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_p2n8", "a36523124", "ug");
+$db_conn = OCILogon("ora_h3g8", "a35788116", "ug");
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
@@ -323,7 +352,7 @@ function printVehicles($result) { //prints results from a select statement
 
 
 function printOperatedBy($result) { //prints results from a select statement
-	echo "<br>OpeartedBy:<br>";
+	echo "<br>OperatedBy:<br>";
 	echo "<table>";
 	echo "<tr><th>sin</th><th>vid</th></tr>";
 
@@ -331,6 +360,66 @@ function printOperatedBy($result) { //prints results from a select statement
 		echo "<tr><td>" . $row["SIN"] . "</td><td>" . $row["VID"]  ."</td></tr>"; //or just use "echo $row[0]" 
 	}
 	echo "</table>";
+
+}
+
+function printJoin($result){
+  echo "<br>Join:<br>";
+  echo "<table>";
+  echo "<tr><th>sin</th><th>name</th><th>vid</th></tr>";
+  while ($row = OCI_Fetch_Array($result, OCI_BOTH)){
+    echo "<tr><td>" . $row["SIN"] . "</td><td>" . $row["NAME"] . "</td><td>" . $row["VID"] . "</td></tr>";
+
+  }
+
+  echo "</table>";
+
+}
+
+function printEmployeeCount($result){
+  echo "<br>";
+ echo "Employees registered: ";
+ while($row = OCI_FETCH_Array($result, OCI_BOTH)){
+  echo $row[0];
+
+ }
+    echo "<br>";
+
+}
+
+function printVehicleCount($result){
+  echo "<br>";
+  echo "Vehicles registered: ";
+ while($row = OCI_FETCH_Array($result, OCI_BOTH)){
+  echo $row[0];
+ }
+    echo "<br>";
+
+}
+
+function printNested($result, $minmax){
+  echo "<br>";
+  echo "Showing the ".$minmax." of average wage of job types: ";
+  
+ while($row = OCI_FETCH_Array($result, OCI_BOTH)){
+  echo $row[0];
+ }
+    echo "<br>";
+
+
+}
+
+function printDivide($result){
+  echo "<br>";
+  echo "Displaying employees unassigned to a vehicle:<br>";
+  echo "<table>";
+  echo "<tr><th>sin</th><th>name</th></tr>";
+  while ($row = OCI_Fetch_Array($result, OCI_BOTH)){
+    echo "<tr><td>" . $row["SIN"] . "</td><td>" . $row["NAME"] . "</td></tr>";
+  }
+
+  echo "</table>";
+  echo "<br>";
 
 }
 
@@ -355,7 +444,7 @@ if ($db_conn) {
 		// Create new table...
 		echo "<br> creating new table <br>";
 	//	executePlainSQL("create table tab1 (nid number, name varchar2(30), primary key (nid))");
-		executePlainSQL("create table employees (sin number, name varchar2(30), phone number, address varchar2(30), username varchar2(20), password varchar2(20), wage number, jobt varchar(10), works varchar(7), primary key (sin))");
+		executePlainSQL("create table employees (sin number, name varchar2(30), phone number, address varchar2(30), username varchar2(20), password varchar2(20), wage number, jobt varchar(10), works varchar(10), primary key (sin))");
 		executePlainSQL("create table vehicles (vid number, capacity number, vmode varchar2(7), cost number, model varchar2(30), age number, primary key(vid))");
 		executePlainSQL("create table operatedby (sin number NOT NULL UNIQUE, vid number NOT NULL UNIQUE, foreign key(sin) references employees(sin) on delete cascade, foreign key(vid) references vehicles(vid) on delete cascade )");
 		OCICommit($db_conn);
@@ -513,7 +602,31 @@ if ($db_conn) {
 					}
 
 					OCICommit($db_conn);
-				}
+        } else
+        if (array_key_exists('joinsubmit', $_POST)){
+          $query = "select e.sin, e.name, v.vid from employees e ";
+          if(!empty($_POST['join'])){
+          $join = $_POST['join'];
+         
+          $query .= "$join OperatedBy ob on e.sin = ob.sin $join vehicles v on ob.vid = v.vid";
+          $table = executePlainSQL($query);
+          printJoin($table); 
+          }
+
+        } else
+          if (array_key_exists('nestsubmit', $_POST)){
+            $minmax = $_POST['nest'];          
+            $query = "select $minmax(avg(wage)) from employees group by jobt"; 
+            $result = executePlainSQL($query);
+            printNested($result, $minmax);
+          } else
+            if (array_key_exists('dividesubmit', $_POST)){
+            $query = "select e.sin, e.name from employees e where not exists (select ob.sin from OperatedBy ob where ob.sin = e.sin)";
+            #$query = "select e.sin, e.name from employees e where not exists ((select v.vid from vehicles v) except (select ob.vid from OperatedBy ob where ob.sid = e.sin))";
+            $result = executePlainSQL($query);
+            printDivide($result);
+            }
+
 
 /*
 	if ($_POST && $success) {
@@ -530,7 +643,11 @@ if ($db_conn) {
 		printVehicles($vehicles);
 		printOperatedBy($operatedby);
 	}*/
-
+    
+    $counte = executePlainSQL("select count(*) from employees");
+    $countv = executePlainSQL("select count(*) from vehicles");
+    printEmployeeCount($counte);
+    printVehicleCount($countv);
 		$employees = executePlainSQL("select * from employees");
 		$vehicles = executePlainSQL("select * from vehicles");
 		$operatedby = executePlainSQL("select * from operatedby");
