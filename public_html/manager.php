@@ -54,18 +54,27 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 	$statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
 
 	if (!$statement) {
-		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
 		$e = OCI_Error($db_conn); // For OCIParse errors pass the       
 		// connection handle
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
+		echo "<br>Cannot parse the following command: " . $cmdstr ."<br>";
+    echo "</div>";
 		$success = False;
 	}
 
 	$r = OCIExecute($statement, OCI_DEFAULT);
 	if (!$r) {
-		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+		#echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
 		$e = oci_error($statement); // For OCIExecute errors pass the statementhandle
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+    echo "</div>";
 		$success = False;
 	} else {
 
@@ -74,31 +83,6 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 
 }
 
-function executeSQL($cmdstr) {
-
-	global $db_conn, $success;
-	$statement = OCIParse($db_conn, $cmdstr);
-	$success = False;
-
-	if (!$statement) {
-		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
-		$e = OCI_Error($db_conn);
-		echo htmlentities($e['message']);
-		$success = False;
-	}
-
-		
-		$r = OCIExecute($statement, OCI_DEFAULT);
-		if (!$r) {
-			echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
-			$e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
-			echo htmlentities($e['message']);
-			echo "<br>";
-			$success = False;
-		}else{
-
-}
-	}
 
 
 
@@ -113,9 +97,15 @@ function executeBoundSQL($cmdstr, $list) {
 	$statement = OCIParse($db_conn, $cmdstr);
 
 	if (!$statement) {
-		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+		#echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
 		$e = OCI_Error($db_conn);
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
+		echo "<br>Cannot parse the following command: " . $cmdstr ."<br>";
+    echo "</div>";
+		
 		$success = False;
 	}
 
@@ -129,10 +119,14 @@ function executeBoundSQL($cmdstr, $list) {
 		}
 		$r = OCIExecute($statement, OCI_DEFAULT);
 		if (!$r) {
-			echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+		#	echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
 			$e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
-			echo htmlentities($e['message']);
-			echo "<br>";
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+		echo htmlentities($e['message']);
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+    echo "</div>";
 			$success = False;
 		}
 	}
@@ -221,7 +215,7 @@ function printOperatedBy($result) { //prints results from a select statement
 
 function printJoin($result){
   echo "<div class=container>";
-  echo "<h3>Join</h3>";
+  echo "<h3>Currently assigned vehicles (JOIN Query) </h3>";
 	echo "<table class='table table-striped'>";
   echo "<tr><th>sin</th><th>name</th><th>vid</th><th>vmode</th></tr>";
   while ($row = OCI_Fetch_Array($result, OCI_BOTH)){
@@ -362,7 +356,7 @@ if ($db_conn) {
 				$query=substr($query,0,-1);
 				$query.=" where sin = $sin";
 				// Update tuple using data from user
-				executeSQL($query);
+				executePlainSQL($query);
 				OCICommit($db_conn);
       }
 			} else
@@ -403,6 +397,9 @@ if ($db_conn) {
 				if(!empty($_POST['projection'])){
 					$result = preg_replace('/[ ]+/',',', trim($pro));
 				}
+				if(!empty($_POST['eSin'])||!empty($_POST['eName'])||!empty($_POST['ePhone'])||!empty($_POST['eAddress'])||!empty($_POST['eUsername'])||!empty($_POST['ePassword'])||!empty($_POST['eWage'])||!empty($_POST['eJobt'])||!empty($_POST['eWorks']))
+				{
+
 				$query="select ";
 				if(empty($_POST['projection'])){
 					$pro = '*';
@@ -410,8 +407,6 @@ if ($db_conn) {
 				$query.=(!empty($_POST['projection']))? "'$result' from employees ":"* from employees "; 
 
 				$query = clean($query);
-				if(!empty($_POST['eSin'])||!empty($_POST['eName'])||!empty($_POST['ePhone'])||!empty($_POST['eAddress'])||!empty($_POST['eUsername'])||!empty($_POST['ePassword'])||!empty($_POST['eWage'])||!empty($_POST['eJobt'])||!empty($_POST['eWorks']))
-				{
 					$query.="where ";
 				$query.=(!empty($_POST['eSin']))? "sin = '$sin',":"";
 				$query.=(!empty($_POST['eName']))? "lower(name) like lower('%$name%'),":"";
@@ -512,7 +507,7 @@ if ($db_conn) {
 				$query=substr($query,0,-1);
 				$query.=" where vid = $vid";
 				// Update tuple using data from user
-				executeSQL($query);
+				executePlainSQL($query);
 				OCICommit($db_conn);
       }
                 }
@@ -629,7 +624,7 @@ if ($db_conn) {
       <div class="modal-body">
         <form method="POST" action= "manager.php"  >
         <div class="form-group">
-      <input type="text" name="eSin" class="form-control" placeholder="SIN"><br>
+      <input type="text" name="eSin" required class="form-control" placeholder="SIN"><br>
       <input type="text" name="eName" class="form-control" placeholder="Name"><br>
       <input type="text" name="ePhone" class="form-control" placeholder="Phone"><br>
       <input type="text" name="eAddress" class="form-control" placeholder="Address"><br>
@@ -855,40 +850,46 @@ if ($db_conn) {
     </div>
   </div>
 </div>
-
+<br><br><br>
 <h4> Show current employees' assigned vehicles (JOIN query) </h4>
 <p>
 <form method="POST" action="manager.php">
 <!--refresh page when submit-->
 <!--define two variables to pass the value-->
-<select name="join" size="1">
+<select class="form-control" name="join" size="1">
   <option value="INNER JOIN" selected="selected">Inner join</option>
   <option value="LEFT JOIN">Left join</option>
   <option value="RIGHT JOIN">Right join</option>
   <option value="FULL JOIN">Full join</option>
 </select>
-<input type="submit" value="Show assigned vehicles" name="joinsubmit"></p>
+<button type="submit" class="btn btn-default" name="joinsubmit">Show assigned vehicles</button>
 </form>
-
+<br>
 <h4> Show min or max of average wage of employees (Nested aggregation with group-by) </h4>
 <p>
 <form method="POST" action="manager.php">
 <!--refresh page when submit-->
 <!--define two variables to pass the value-->
-<select name="nest" size="1">
+<select class="form-control" name="nest" size="1">
   <option value="MAX" selected="selected">Maximum</option>
   <option value="MIN">Minimum</option>
 </select>
+<button type="submit" class="btn btn-default" name="nestsubmit">Show min/max of average wage</button>
+<!--
 <input type="submit" value="Show min/max of average wage" name="nestsubmit"></p>
+-->
 </form>
-
+<br>
 
 <h4> Find employees who have not been assigned to a vehicle (Division Query) </h4>
 <p>
 <form method="POST" action="manager.php">
 <!--refresh page when submit-->
 <!--define two variables to pass the value-->
-<input type="submit" value="divide by job type" name="dividesubmit"></p>
+<button type="submit" class="btn btn-default" name="dividesubmit">Show unassigned employees</button>
+<!--
+<input type="submit" value="Show unassigned employees" name="dividesubmit"></p>
+-->
 </form>
 
 </div>
