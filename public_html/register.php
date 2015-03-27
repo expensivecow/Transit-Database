@@ -198,7 +198,7 @@ if ($db_conn) {
       $alltuples = array (
         $tuple
       );
-      executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3, :bind4, null)", $alltuples);
+      executeBoundSQL("insert into customers values (:bind1, :bind2, :bind3, :bind4, 0)", $alltuples);
       OCICommit($db_conn);
     }
 
