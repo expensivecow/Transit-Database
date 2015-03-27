@@ -66,6 +66,19 @@ create table Customers(
 	Address char(40),
 	Username char(40),
 	Password char(40),
+	AccountCredit int,
+	primary key(Name,PhoneNumber)
+	foreign key(Name, PhoneNumber)
+	references transit_user(Name, PhoneNumber)
+);
+
+
+-- INSERTING VALUES INTO THE TABLES
+
+
+-- Transit User table
+
+insert into transit_user values ('Bob', 7786546588, '
 	
 	
 
