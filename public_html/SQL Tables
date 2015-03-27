@@ -1,5 +1,11 @@
 -- CS304 TABLES FOR TRANSPORTATION SYSTEM DATABASE
-
+drop table TransitUser;
+drop table Employee;
+drop table Manager;
+drop table Branch;
+drop table Schedule;
+drop table OwnedVehcles;
+drop table Customers;
 
 create table TransitUser(
 	Name varchar2(40),
