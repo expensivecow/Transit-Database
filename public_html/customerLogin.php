@@ -40,7 +40,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.php">Home</a></li>
-            <li><a href="#Schedule">Schedule</a></li>
+            <li><a href="./schedule.php">Schedule</a></li>
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
             <li><a href="http://www.omfgdogs.com">Contact</a></li>
@@ -70,7 +70,7 @@
 
 <?php
 if(isset($_SESSION['username'])){
-      header("location: client.php");
+      header("location: index.php");
     }
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
