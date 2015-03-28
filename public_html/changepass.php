@@ -40,10 +40,14 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.php">Home</a></li>
-            <li><a href="#Schedule">Schedule</a></li>
+            <li><a href="schedule.php">Schedule</a></li>
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
             <li><a href="http://www.omfgdogs.com">Contact</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="changepass.php">Change Password</a></li>
+            <li><a href="signout.php">Sign Out</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -52,13 +56,19 @@
       <div class="starter-template">
     <div class="container">
 
-      <form class="form-signin" action="managerLogin.php" method="POST">
-        <h2 class="form-signin-heading">Please sign in (Manager)</h2>
-        <label for="inputEmail" class="sr-only">Username</label>
-        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        <button type="submit" value="Login" class="btn btn-lg btn-primary btn-block" name ="Login">Sign in</button>
+      <form class="form-signin" action="changepass.php" method="POST">
+        <h2 class="form-signin-heading">Please Fill in the Boxes Below</h2>
+
+        <label for="oldpass" class="sr-only">OldPass</label>
+        <input type="password" id="oldpass" name="oldpass" class="form-control" placeholder="Old Password" required>
+
+        <label for="newpass" class="sr-only">NewPass</label>
+        <input type="password" id="newpass" name="newpass" class="form-control" placeholder="New Password" required autofocus>
+
+        <label for="confirmpass" class="sr-only">ConfirmPass</label>
+        <input type="password" id="confirmpass" name="confirmpass" class="form-control" placeholder="Repeat New Password" required>
+
+        <button type="submit" value="change" class="btn btn-lg btn-primary btn-block" name ="change">Change Password!</button>
       </form>
 
     </div> <!-- /container -->
@@ -69,9 +79,6 @@
   </body>
 
 <?php
-if(isset($_SESSION['username'])){
-      header("location: index.php");
-    }
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
 
@@ -86,7 +93,7 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
   if (!$statement) {
     $e = OCI_Error($db_conn); // For OCIParse errors pass the       
     // connection handle
-        echo "<div class='alert alert-danger' role='alert'>";
+    echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
@@ -98,7 +105,7 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
   $r = OCIExecute($statement, OCI_DEFAULT);
   if (!$r) {
     $e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-        echo "<div class='alert alert-danger' role='alert'>";
+    echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
@@ -124,12 +131,13 @@ function executeBoundSQL($cmdstr, $list) {
 
   if (!$statement) {
     $e = OCI_Error($db_conn);
-        echo "<div class='alert alert-danger' role='alert'>";
+    echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
     echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
     echo "</div>";
+
     $success = False;
   }
 
@@ -173,34 +181,50 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
     if (!is_writable(session_save_path())) {
-          echo "<div class='alert alert-danger' role='alert'>";
+    echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
       echo 'Session path "'.session_save_path().'" is not writable for PHP!'; 
     echo "</div>";
     }
-    if(array_key_exists('Login', $_POST)) {
-        
-        $users = $_POST['username'];
-        $passw = $_POST['password'];
-
-      //oci_execute(,OCI_DEFAULT);
-      $result = executePlainSQL("select m.username from employee e, manager m where m.username = '$users' and e.password = '$passw' and m.username = e.username");
-      $numrows = oci_fetch_all($result, $res);
-      if($numrows == 0){
-        echo "<div class='alert alert-danger' role='alert'>";
-    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
-    echo "<span class='sr-only'>Error:</span>";
-        echo "Invalid User or Password.";
-    echo "</div>";
-      }
-      if($numrows == 1){
-        $_SESSION['username'] = $users;
-        echo $_SESSION['username'];
-        $_SESSION['permissions'] = "MANAGER";
-        echo $_SESSION['permissions'];
-        header("location: manager.php");
-      }
+    if(array_key_exists('change', $_POST)) {
+          $users = $_SESSION['username'];
+          $passw = $_POST['oldpass'];
+          $newpass = $_POST['newpass'];
+          $confirmpass = $_POST['confirmpass'];
+      
+          if($_SESSION['permissions'] == 'USER') {
+              $result = executePlainSQL("select username from customers where username = '$users' and password = '$passw'");
+              $numrows = oci_fetch_all($result, $res);
+              if($numrows == 0) {
+                  echo "Wrong User and Password Combination";
+              }
+              if($numrows == 1 && ($_POST['newpass'] == $_POST['confirmpass'])){
+                executePlainSQL("update customers set password = '$newpass' where username = '$users'");
+                header("location: signout.php");
+              }
+          } elseif($_SESSION['permissions'] == 'EMPLOYEE') {
+              $result = executePlainSQL("select username from employee where username = '$users' and password = '$passw'");
+              $numrows = oci_fetch_all($result, $res);
+              if($numrows == 0) {
+                  echo "Wrong User and Password Combination";
+              }
+              if($numrows == 1 && ($_POST['newpass'] == $_POST['confirmpass'])){
+                executePlainSQL("update employee set password = '$newpass' where username = '$users'");
+                header("location: signout.php");
+              }
+          } elseif($_SESSION['permissions'] == 'MANAGER') {
+              $result = executePlainSQL("select username from manager m, employee e where m.username = '$users' and m.username = e.username and e.password = '$passw'");
+              $numrows = oci_fetch_all($result, $res);
+              if($numrows == 0) {
+                  echo "Wrong User and Password Combination";
+              }
+              if($numrows == 1 && ($_POST['newpass'] == $_POST['confirmpass'])){
+                executePlainSQL("update employee set password = '$newpass' where username = '$users'");
+                header("location: signout.php");
+              }
+          }
+      
       //echo "Printing number of items: " . $result;
     }
     OCICommit($db_conn);
@@ -210,12 +234,14 @@ if ($db_conn) {
    // printResult($result);
     //Commit to save changes...
 } else {
+
+
   $e = OCI_Error(); // For OCILogon errors pass no handle
     echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
+  echo "cannot connect";
 		echo htmlentities($e['message']);
-  echo "<br>cannot connect";
     echo "</div>";
 
 

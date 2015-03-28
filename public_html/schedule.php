@@ -43,10 +43,10 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.php">Home</a></li>
-            <li><a href="./Schedule.php">Schedule</a></li>
+            <li><a href="./schedule.php">Schedule</a></li>
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="http://www.omfgdogs.com">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -70,7 +70,101 @@
             <li><a href="schedule.php">Schedule</a></li>
             <li><a href="register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="http://www.omfgdogs.com">Contact</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="changepass.php">Change Password</a></li>
+            <li><a href="signout.php">Sign Out</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+<?php endif;?>
+    <div class="container">
+      <h2>Bus Schedule</h2>       
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Transit ID</th>
+              <th>Arrivals</th>
+              <th>Departures</th>
+              <th>Destination</th>
+              <th>Travel Time</th>
+            </tr>
+          </thead>
+        <?php
+        $usern = $_SESSION['username'];
+        $conn = oci_connect("ora_p2n8", "a36523124", "ug");
+        $results = oci_parse($conn, "select * from schedule");
+        oci_execute($results);
+        while ($row = oci_fetch_array($results, OCI_BOTH)) {
+          echo "<tbody><tr><td>" . $row["TRANSITID"] . " </td><td>"  . $row["ARRIVALS"] . " </td>
+          <td>" . $row["DEPARTURES"] . " </td><td>" . $row["DESTINATION"] . " </td><td>" . $row["TRAVELTIME"] . " </td></tr></tbody>";
+        }
+        /*
+        $results = oci_parse($conn, "select * from customers");
+        oci_execute($results);
+        while ($row = oci_fetch_array($results, OCI_BOTH)) {
+          echo "<tbody><tr><td>" . $row["USERNAME"] . " </td><td>"  . $row["USERNAME"] . " </td>
+          <td>" . $row["USERNAME"] . " </td><td>" . $row["USERNAME"] . " </td><td>" . $row["USERNAME"] . " </td></tr></tbody>";
+        }
+        */
+        oci_close($conn);
+        ?>
+        </table>
+      </div>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+<?php else : ?>
+  <body>
+  <!-- Adding Navigation Bar-->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Transit</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="index.php">Home</a></li>
+            <li><a href="./schedule.php">Schedule</a></li>
+            <li><a href="./register.php">Register</a></li>
+            <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
+            <li><a href="http://www.omfgdogs.com">Contact</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="changepass.php">Change Password</a></li>
+            <li><a href="signout.php">Sign Out</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+<?php else:?>
+    <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Transit</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="index.php">Home</a></li>
+            <li><a href="schedule.php">Schedule</a></li>
+            <li><a href="register.php">Register</a></li>
+            <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
+            <li><a href="http://www.omfgdogs.com">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="signout.php">Sign Out</a></li>
@@ -84,55 +178,34 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>Firstname</th>
-              <th>Lastname</th>
-              <th>Email</th>
+              <th>Transit ID</th>
+              <th>Arrivals</th>
+              <th>Departures</th>
+              <th>Destination</th>
+              <th>Travel Time</th>
             </tr>
           </thead>
         <?php
-        echo "Balance is $";
         $usern = $_SESSION['username'];
         $conn = oci_connect("ora_p2n8", "a36523124", "ug");
-        $results = oci_parse($conn, "select credit from customers where username = '$usern'");
+        $results = oci_parse($conn, "select * from schedule");
         oci_execute($results);
         while ($row = oci_fetch_array($results, OCI_BOTH)) {
-          echo "<tr><td>" . " " . $row["CREDIT"] . " </td></tr>";
+          echo "<tbody><tr><td>" . $row["TRANSITID"] . " </td><td>"  . $row["ARRIVALS"] . " </td>
+          <td>" . $row["DEPARTURES"] . " </td><td>" . $row["DESTINATION"] . " </td><td>" . $row["TRAVELTIME"] . " </td></tr></tbody>";
         }
+        /*
+        $results = oci_parse($conn, "select * from customers");
+        oci_execute($results);
+        while ($row = oci_fetch_array($results, OCI_BOTH)) {
+          echo "<tbody><tr><td>" . $row["USERNAME"] . " </td><td>"  . $row["USERNAME"] . " </td>
+          <td>" . $row["USERNAME"] . " </td><td>" . $row["USERNAME"] . " </td><td>" . $row["USERNAME"] . " </td></tr></tbody>";
+        }
+        */
         oci_close($conn);
         ?>
-        </font></b>
-      </div>
-    </div>
-      <div class="container">
-        <h2>Bus Schedule</h2>       
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Firstname</th>
-              <th>Lastname</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>John</td>
-              <td>Doe</td>
-              <td>john@example.com</td>
-            </tr>
-            <tr>
-              <td>Mary</td>
-              <td>Moe</td>
-              <td>mary@example.com</td>
-            </tr>
-            <tr>
-              <td>July</td>
-              <td>Dooley</td>
-              <td>july@example.com</td>
-            </tr>
-          </tbody>
         </table>
       </div>
-
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>

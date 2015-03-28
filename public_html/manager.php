@@ -1,3 +1,6 @@
+<?php session_save_path("/home/p/p2n8/php");
+  session_start();?>
+<?php if(($_SESSION['permissions'] == "MANAGER")) : ?>
 <html lang = "en">
 <head>
 <meta charset="utf-8">
@@ -8,7 +11,7 @@
 
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-<link href="main/starter-template.css" rel="stylesheet">
+<link href="./starter-template.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <style type="text/css">
@@ -32,176 +35,25 @@
           </div>
           <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-              <li><a href="main">Home</a></li>
+              <li><a href="index.php">Home</a></li>
               <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
               <li><a href="#contact">Contact</a></li>
               <li><a href="employeetable.php">Employee Table</a></li>
             </ul>
+          	<ul class="nav navbar-nav navbar-right">
+              <li><a href="changepass.php">Change Password</a></li>
+              <li><a href="signout.php">Sign Out</a></li>
+          	</ul>
           </div><!--/.nav-collapse -->
         </div>
       </nav>
 <div class="container">
-<h1>Manager functions:</h1>
-<p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
-<form method="POST" action="manager.php">
-<p><input type="submit" value="Reset" name="reset"></p>
-</form>
-
-<!--
-<form method="POST" action= "manager.php" class="navbar-form navbar-left" >
-  <div class="form-group">
-    <input type="text" name="eSin" class="form-control" placeholder="SIN">
-    <input type="text" name="eName" class="form-control" placeholder="Name"><br>
-    <input type="text" name="ePhone" class="form-control" placeholder="Phone"><br>
-    <input type="text" name="eAddress" class="form-control" placeholder="Address"><br>
-    <input type="text" name="eUsername" class="form-control" placeholder="Username"><br>
-    <input type="text" name="ePassword" class="form-control" placeholder="Password"><br>
-    <input type="text" name="eWage" class="form-control" placeholder="Wage"><br>
-    <input type="text" name="eJobt" class="form-control" placeholder="Job Type"><br>
-    <input type="text" name="eWorks" class="form-control" placeholder="Work Schedule"><br>
-  </div>
-  <br>
-  <button type="submit" name="insertsubmit" class="btn btn-default">Submit</button>
-</form>
--->
-
-
-<h3>Insert values into employees below:</h3>
-<form method="POST" action="manager.php">
-<!--refresh page when submit-->
-<p>
-<font size="2">SIN:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="eSin" size="6"><br>
-<font size="2">Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="eName" size="18"><br>
-<font size="2">Phone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="ePhone" size="18"><br>
-<font size="2">Address:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="eAddress" size="18"><br>
-<font size="2">Username:&nbsp;&nbsp;</font><input type="text" name="eUsername" size="18"><br>
-<font size="2">Password:&nbsp;&nbsp;&nbsp;</font><input type="text" name="ePassword" size="18"><br>
-<font size="2">Wage:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="eWage" size="18"><br>
-<font size="2">Job Type:&nbsp;&nbsp;&nbsp;</font><input type="text" name="eJobt" size="18"><br>
-<font size="2">Work schedule:&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="eWorks" size="18">
-
-<!--define two variables to pass the value-->
-<input type="submit" value="insert" name="insertsubmit"></p>
-</form> 
-
-<!-- create a form to pass the values. See below for how to 
-get the values--> 
-<h3> Update the name by inserting the SIN and new values below: </h3>
-<form method="POST" action="manager.php">
-<!--refresh page when submit-->
-
-<p>
-<font size="2">&nbsp;SIN:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="eSin" size="8"><br><br>
-<font size="2">&nbsp;Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
-<font size="2">Phone&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
-<font size="2">Address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
-<font size="2">Wage&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
-<font size="2">Job Type&nbsp;&nbsp;&nbsp;</font>
-<font size="2">Work schedule&nbsp;&nbsp;&nbsp;&nbsp;</font><br>
-<input type="text" name="eName" size="8"><input type="text" name="ePhone" size="8"><input type="text" name="eAddress" size="8"><input type="text" name="eWage" size="8"><input type="text" name="eJobt" size="8"><input type="text" name="eWorks" size="8">
-<!--define two variables to pass the value-->
-<br>      
-<input type="submit" value="update" name="updatesubmit"></p>
-<input type="submit" value="run hardcoded queries" name="dostuff"></p>
-</form>
-
-
-<h3> Selection and projection query </h3>
-<p>
-<form method="POST" action="manager.php">
-<!--refresh page when submit-->
-
-<p>
-<font size="2">Projection:&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="projection" size="6"><br>
-</p>
-
-<p>
-<font size="2">Selection:</font><br>
-
-<font size="2">&nbsp;SIN:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
-<font size="2">&nbsp;Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
-<font size="2">Phone&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
-<font size="2">Address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
-<font size="2">Wage&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
-<font size="2">Job Type&nbsp;&nbsp;&nbsp;</font>
-<font size="2">Work schedule&nbsp;&nbsp;&nbsp;&nbsp;</font><br>
-<input type="text" name="eSin" size="8"><input type="text" name="eName" size="8"><input type="text" name="ePhone" size="8"><input type="text" name="eAddress" size="8"><input type="text" name="eWage" size="8"><input type="text" name="eJobt" size="8"><input type="text" name="eWorks" size="8">
-<!--define two variables to pass the value-->
-      
-<input type="submit" value="query" name="selectionsubmit"></p>
-</form>
-
-<h4> Assign vehicles </h4>
-<p>
-<form method="POST" action="manager.php">
-<!--refresh page when submit-->
-<font size="2">Assign employee(SIN) to vehicle(vid)</font><br>
-<font size="2">&nbsp;SIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font size="2">VID</font>
-<br>
-<!--define two variables to pass the value-->
-      <input type="text" name="eSin" size="6">
-<input type="text" name="vid" size="6"><br>
-
-<input type="submit" value="assign" name="assignsubmit"></p>
-</form>
-
-<h4> Delete </h4>
-<p>
-<form method="POST" action="manager.php">
-<!--refresh page when submit-->
-<font size="2">Delete element from a table:</font><br>
-<font size="2">Employee(SIN):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="eSin" size="6"><br>
-<font size="2">Vehicle(vid):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><input type="text" name="vid" size="6"><br>
-<!--define two variables to pass the value-->
-<input type="submit" value="delete" name="deletesubmit"></p>
-</form>
-
-
-<h4> Show current employees' assigned vehicles (JOIN query) </h4>
-<p>
-<form method="POST" action="manager.php">
-<!--refresh page when submit-->
-<!--define two variables to pass the value-->
-<select name="join" size="1">
-  <option value="INNER JOIN" selected="selected">Inner join</option>
-  <option value="LEFT JOIN">Left join</option>
-  <option value="RIGHT JOIN">Right join</option>
-  <option value="FULL JOIN">Full join</option>
-</select>
-<input type="submit" value="Show assigned vehicles" name="joinsubmit"></p>
-</form>
-
-<h4> Show min or max of average wage of employees (Nested aggregation with group-by) </h4>
-<p>
-<form method="POST" action="manager.php">
-<!--refresh page when submit-->
-<!--define two variables to pass the value-->
-<select name="nest" size="1">
-  <option value="MAX" selected="selected">Maximum</option>
-  <option value="MIN">Minimum</option>
-</select>
-<input type="submit" value="Show min/max of average wage" name="nestsubmit"></p>
-</form>
-
-
-<h4> Find employees who have not been assigned to a vehicle (Division Query) </h4>
-<p>
-<form method="POST" action="manager.php">
-<!--refresh page when submit-->
-<!--define two variables to pass the value-->
-<input type="submit" value="divide by job type" name="dividesubmit"></p>
-</form>
-
-</div>
-</body>
-
 <?php
-
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_h3g8", "a35788116", "ug");
+$db_conn = OCILogon("ora_p2n8", "a36523124", "ug");
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
@@ -209,18 +61,27 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 	$statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
 
 	if (!$statement) {
-		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
 		$e = OCI_Error($db_conn); // For OCIParse errors pass the       
 		// connection handle
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
+		echo "<br>Cannot parse the following command: " . $cmdstr ."<br>";
+    echo "</div>";
 		$success = False;
 	}
 
 	$r = OCIExecute($statement, OCI_DEFAULT);
 	if (!$r) {
-		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+		#echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
 		$e = oci_error($statement); // For OCIExecute errors pass the statementhandle
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+    echo "</div>";
 		$success = False;
 	} else {
 
@@ -229,31 +90,6 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 
 }
 
-function executeSQL($cmdstr) {
-
-	global $db_conn, $success;
-	$statement = OCIParse($db_conn, $cmdstr);
-	$success = False;
-
-	if (!$statement) {
-		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
-		$e = OCI_Error($db_conn);
-		echo htmlentities($e['message']);
-		$success = False;
-	}
-
-		
-		$r = OCIExecute($statement, OCI_DEFAULT);
-		if (!$r) {
-			echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
-			$e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
-			echo htmlentities($e['message']);
-			echo "<br>";
-			$success = False;
-		}else{
-
-}
-	}
 
 
 
@@ -268,9 +104,15 @@ function executeBoundSQL($cmdstr, $list) {
 	$statement = OCIParse($db_conn, $cmdstr);
 
 	if (!$statement) {
-		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+		#echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
 		$e = OCI_Error($db_conn);
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
+		echo "<br>Cannot parse the following command: " . $cmdstr ."<br>";
+    echo "</div>";
+		
 		$success = False;
 	}
 
@@ -284,10 +126,14 @@ function executeBoundSQL($cmdstr, $list) {
 		}
 		$r = OCIExecute($statement, OCI_DEFAULT);
 		if (!$r) {
-			echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+		#	echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
 			$e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
-			echo htmlentities($e['message']);
-			echo "<br>";
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+		echo htmlentities($e['message']);
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+    echo "</div>";
 			$success = False;
 		}
 	}
@@ -308,118 +154,134 @@ function printResult($result) { //prints results from a select statement
 }
 
 function printProjection($result, $column){
-	echo "<br>Result of projection query:<br>";
-	echo "<table>";
+  echo "<div class=container>";
+  echo "<h3>Result of projection/selection query:</h3>";
+	echo "<table class='table table-striped'>";
 	if(strpos($column, '*') !== FALSE){
 		echo "<tr><th>SIN</th><th>Name</th><th>Phone</th><th>Address</th><th>Username</th><th>Password</th><th>Wage</th><th>Job Type</th><th>Work Schedule</th></tr>";
 	} else{
-		echo "<tr><th><b>$column</b></th></tr>";
+    $data = preg_split('/\s+/', $column);
+    echo "<tr>";
+    for ($x = 0; $x < count($data); $x++){
+      echo "<th>$data[$x]</th>";
+    }
+		echo "</tr>";
 	}
 	while($row = OCI_FETCH_Array($result, OCI_BOTH)){
 		echo "<tr><td>".$row["SIN"]."</td><td>".$row["NAME"]."</td><td>".$row["PHONE"]."</td><td>".$row["ADDRESS"]."</td><td>".$row["USERNAME"]."</td><td>".$row["PASSWORD"]."</td><td>".$row["WAGE"]."</td><td>".$row["JOBT"]  ."</td><td>".$row["WORKS"]."</td></tr>"; //or just use "echo $row[0]" 
 	}
 	echo "</table>";
-
+  echo "</div>";
 
 
 
 }
 
 function printEmployees($result) { //prints results from a select statement
-	echo "<br>employees:<br>";
-	echo "<table>";
+  echo "<div class=container>";
+  echo "<h3>Employees</h3>";
+	echo "<table class='table table-striped'>";
 	echo "<tr><th>SIN</th><th>Name</th><th>Phone</th><th>Address</th><th>Username</th><th>Password</th><th>Wage</th><th>Job Type</th><th>Work Schedule</th></tr>";
-
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
 		echo "<tr><td>".$row["SIN"] . "</td><td>" . $row["NAME"] ."</td><td>" . $row["PHONE"]  ."</td><td>" . $row["ADDRESS"]  ."</td><td>" . $row["USERNAME"]  ."</td><td>" . $row["PASSWORD"]  ."</td><td>" . $row["WAGE"]  ."</td><td>" . $row["JOBT"]  ."</td><td>" . $row["WORKS"] . "</td></tr>"; //or just use "echo $row[0]" 
 	}
 	echo "</table>";
+  echo "</div>";
 
 }
 
 
 function printVehicles($result) { //prints results from a select statement
-	echo "<br>vehicles:<br>";
-	echo "<table>";
+  echo "<div class=container>";
+  echo "<h3>Vehicles</h3>";
+	echo "<table class='table table-striped'>";
 	echo "<tr><th>vid</th><th>Capacity</th><th>Mode of Transport</th><th>Cost</th><th>Model</th><th>Age</th></tr>";
 
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
 		echo "<tr><td>" . $row["VID"] . "</td><td>" . $row["CAPACITY"] ."</td><td>" . $row["VMODE"]  ."</td><td>" . $row["COST"]  ."</td><td>" . $row["MODEL"]  ."</td><td>" . $row["AGE"]  ."</td></tr>"; //or just use "echo $row[0]" 
 	}
 	echo "</table>";
-
+  echo "</div>";
 }
 
 
 function printOperatedBy($result) { //prints results from a select statement
-	echo "<br>OperatedBy:<br>";
-	echo "<table>";
+
+  echo "<div class=container>";
+  echo "<h3>OperatedBy</h3>";
+	echo "<table class='table table-striped'>";
 	echo "<tr><th>sin</th><th>vid</th></tr>";
 
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
 		echo "<tr><td>" . $row["SIN"] . "</td><td>" . $row["VID"]  ."</td></tr>"; //or just use "echo $row[0]" 
 	}
 	echo "</table>";
+  echo "</div>";
 
 }
 
 function printJoin($result){
-  echo "<br>Join:<br>";
-  echo "<table>";
-  echo "<tr><th>sin</th><th>name</th><th>vid</th></tr>";
+  echo "<div class=container>";
+  echo "<h3>Currently assigned vehicles (JOIN Query) </h3>";
+	echo "<table class='table table-striped'>";
+  echo "<tr><th>sin</th><th>name</th><th>vid</th><th>vmode</th></tr>";
   while ($row = OCI_Fetch_Array($result, OCI_BOTH)){
-    echo "<tr><td>" . $row["SIN"] . "</td><td>" . $row["NAME"] . "</td><td>" . $row["VID"] . "</td></tr>";
+    echo "<tr><td>" . $row["SIN"] . "</td><td>" . $row["NAME"] . "</td><td>" . $row["VID"]. "</td><td>" . $row["VMODE"] . "</td></tr>";
 
   }
 
   echo "</table>";
-
+  echo "</div>";
 }
 
 function printEmployeeCount($result){
-  echo "<br>";
- echo "Employees registered: ";
- while($row = OCI_FETCH_Array($result, OCI_BOTH)){
-  echo $row[0];
+  echo "<div class=container>";
+  echo "<p class=lead>Total employees registered: ";
+  while($row = OCI_FETCH_Array($result, OCI_BOTH)){
+   echo $row[0];
 
  }
-    echo "<br>";
+    echo "</p>";
+  echo "</div>";
 
 }
 
 function printVehicleCount($result){
-  echo "<br>";
-  echo "Vehicles registered: ";
+  echo "<div class=container>";
+  echo "<p class=lead>Total vehicles registered: ";
  while($row = OCI_FETCH_Array($result, OCI_BOTH)){
   echo $row[0];
  }
-    echo "<br>";
+  echo "</p>";
+  echo "</div>";
 
 }
 
 function printNested($result, $minmax){
-  echo "<br>";
-  echo "Showing the ".$minmax." of average wage of job types: ";
+  echo "<div class=container>";
+  echo "<h3>Showing the ".$minmax." of average wage of job types: </h3>";
+	echo "<table class='table table-striped'>";
+  echo "<tr><th>Wage</th></tr>";
   
  while($row = OCI_FETCH_Array($result, OCI_BOTH)){
-  echo $row[0];
+  echo "<tr><td>" . $row[0] . "</td></tr>";
  }
-    echo "<br>";
-
+  echo "</table>";
+  echo "</div>";
 
 }
 
 function printDivide($result){
-  echo "<br>";
-  echo "Displaying employees unassigned to a vehicle:<br>";
-  echo "<table>";
-  echo "<tr><th>sin</th><th>name</th></tr>";
+  echo "<div class=container>";
+	echo "<table class='table table-striped'>";
+  echo "<h3>Displaying employees not assigned to a vehicle</h3>";
+  echo "<tr><th>sin</th><th>name</th><th>phone</th></tr>";
   while ($row = OCI_Fetch_Array($result, OCI_BOTH)){
-    echo "<tr><td>" . $row["SIN"] . "</td><td>" . $row["NAME"] . "</td></tr>";
+    echo "<tr><td>" . $row["SIN"] . "</td><td>" . $row["NAME"] ."</td><td>" . $row["PHONE"]. "</td></tr>";
   }
 
   echo "</table>";
-  echo "<br>";
+  echo "</div>";
 
 }
 
@@ -432,6 +294,10 @@ function clean($string) {
 
 // Connect Oracle...
 if ($db_conn) {
+  
+
+
+
 
 	if (array_key_exists('reset', $_POST)) {
 		// Drop old table...
@@ -474,7 +340,7 @@ if ($db_conn) {
 
 		} else
 			if (array_key_exists('updatesubmit', $_POST)) {
-	
+      if(!empty($_POST['eSin'])){	
 				$sin = $_POST['eSin'];
 				$name = $_POST['eName'];
 				$phone = $_POST['ePhone'];
@@ -497,9 +363,9 @@ if ($db_conn) {
 				$query=substr($query,0,-1);
 				$query.=" where sin = $sin";
 				// Update tuple using data from user
-				executeSQL($query);
+				executePlainSQL($query);
 				OCICommit($db_conn);
-
+      }
 			} else
 				if (array_key_exists('dostuff', $_POST)) {
 					// Insert data into table...
@@ -520,26 +386,10 @@ if ($db_conn) {
 						$list1,
 						$list2
 					);
-//					executeBoundSQL("insert into tab1 values (:bind1, :bind2)", $allrows); //the function takes a list of lists
-					// Update data...
-					//executePlainSQL("update tab1 set nid=10 where nid=2");
-					// Delete data...
-					//executePlainSQL("delete from tab1 where nid=1");
+
 					OCICommit($db_conn);
 				}  else
 				if (array_key_exists('selectionsubmit', $_POST)) {
-/*
-					if(!empty($_POST['projection'])){
-						$pro = $_POST['projection'];
-						$result = preg_replace('/[ ]+/',',', trim($pro));
-						$query = "select ";
-						$query .= "$result from employees";
-			//			echo $query;
-						$employees = executePlainSQL($query);
-			//			printEmployees($employees);
-						printProjection($employees, $pro);
-				}*/					
-				
 				
 					$sin = $_POST['eSin'];
 					$name = $_POST['eName'];
@@ -554,15 +404,16 @@ if ($db_conn) {
 				if(!empty($_POST['projection'])){
 					$result = preg_replace('/[ ]+/',',', trim($pro));
 				}
+				if(!empty($_POST['eSin'])||!empty($_POST['eName'])||!empty($_POST['ePhone'])||!empty($_POST['eAddress'])||!empty($_POST['eUsername'])||!empty($_POST['ePassword'])||!empty($_POST['eWage'])||!empty($_POST['eJobt'])||!empty($_POST['eWorks']))
+				{
+
 				$query="select ";
 				if(empty($_POST['projection'])){
 					$pro = '*';
 				}
-				$query.=(!empty($_POST['projection']))? "'$result' from employees ":"* from employees "; 
+				$query.=(!empty($_POST['projection']))? "'$result' from employee ":"* from employee "; 
 
 				$query = clean($query);
-				if(!empty($_POST['eSin'])||!empty($_POST['eName'])||!empty($_POST['ePhone'])||!empty($_POST['eAddress'])||!empty($_POST['eUsername'])||!empty($_POST['ePassword'])||!empty($_POST['eWage'])||!empty($_POST['eJobt'])||!empty($_POST['eWorks']))
-				{
 					$query.="where ";
 				$query.=(!empty($_POST['eSin']))? "sin = '$sin',":"";
 				$query.=(!empty($_POST['eName']))? "lower(name) like lower('%$name%'),":"";
@@ -575,7 +426,7 @@ if ($db_conn) {
 				$query.=(!empty($_POST['eWorks']))? "works='$works',":"";
 				$query=substr($query,0,-1);
 				};
-				echo $query;
+				#echo $query;
 				$employees = executePlainSQL($query);	
 				printProjection($employees, $pro);
 
@@ -593,7 +444,7 @@ if ($db_conn) {
 				if (array_key_exists('deletesubmit', $_POST)){
 					if(!empty($_POST['eSin'])){
 						$sin = $_POST['eSin'];
-						executePlainSQL("delete from employees where sin=$sin");						
+						executePlainSQL("delete from employee where sin=$sin");						
 					}
 					if(!empty($_POST['vid'])){
 						$vid = $_POST['vid'];
@@ -604,7 +455,7 @@ if ($db_conn) {
 					OCICommit($db_conn);
         } else
         if (array_key_exists('joinsubmit', $_POST)){
-          $query = "select e.sin, e.name, v.vid from employees e ";
+          $query = "select e.sin, e.name, v.vid, v.vmode from employee e ";
           if(!empty($_POST['join'])){
           $join = $_POST['join'];
          
@@ -616,17 +467,68 @@ if ($db_conn) {
         } else
           if (array_key_exists('nestsubmit', $_POST)){
             $minmax = $_POST['nest'];          
-            $query = "select $minmax(avg(wage)) from employees group by jobt"; 
+            $query = "select $minmax(avg(wage)) from employee group by jobt"; 
             $result = executePlainSQL($query);
             printNested($result, $minmax);
           } else
             if (array_key_exists('dividesubmit', $_POST)){
-            $query = "select e.sin, e.name from employees e where not exists (select ob.sin from OperatedBy ob where ob.sin = e.sin)";
-            #$query = "select e.sin, e.name from employees e where not exists ((select v.vid from vehicles v) except (select ob.vid from OperatedBy ob where ob.sid = e.sin))";
+            $query = "select e.sin, e.name, e.phone from employee e where not exists (select ob.sin from OperatedBy ob where ob.sin = e.sin)";
+            #$query = "select e.sin, e.name from employee e where not exists ((select v.vid from vehicles v) except (select ob.vid from OperatedBy ob where ob.sid = e.sin))";
             $result = executePlainSQL($query);
             printDivide($result);
-            }
+            } else
+              if (array_key_exists('vinsertsubmit',$_POST)){
+			//Getting the values from user and insert data into the table
+			$tuple = array (
+	//			":bind1" => $_POST['insNo'],
+	//			":bind2" => $_POST['insName'],
+				":bind1" => $_POST['vid'],
+				":bind2" => $_POST['capacity'],
+				":bind3" => $_POST['vmode'],
+				":bind4" => $_POST['cost'],
+				":bind5" => $_POST['model'],
+				":bind6" => $_POST['age']
+			);
+			$alltuples = array (
+				$tuple
+			);
+		//	executeBoundSQL("insert into tab1 values (:bind1, :bind2)", $alltuples);
+			executeBoundSQL("insert into vehicles values (:bind1, :bind2, :bind3, :bind4, :bind5, :bind6 )", $alltuples);
+			OCICommit($db_conn);
+              } else
+                if (array_key_exists('vupdatesubmit',$_POST)){
+      if(!empty($_POST['vid'])){
+				$vid = $_POST['vid'];
+				$capacity = $_POST['capacity'];
+				$vmode = $_POST['vmode'];
+				$cost = $_POST['cost'];
+				$model = $_POST['model'];
+				$age = $_POST['age'];
 
+				$query="update vehicles set ";
+				$query.=(!empty($_POST['capacity']))? "capacity=$capacity,":"";
+				$query.=(!empty($_POST['vmode']))? "vmode='$vmode',":"";
+				$query.=(!empty($_POST['cost']))? "cost='$cost',":"";
+				$query.=(!empty($_POST['model']))? "model='$model',":"";
+				$query.=(!empty($_POST['age']))? "age='$age',":"";
+				$query=substr($query,0,-1);
+				$query.=" where vid = $vid";
+				// Update tuple using data from user
+				executePlainSQL($query);
+				OCICommit($db_conn);
+      }
+                }
+
+    $counte = executePlainSQL("select count(*) from employee");
+    $countv = executePlainSQL("select count(*) from vehicles");
+    printEmployeeCount($counte);
+    printVehicleCount($countv);
+		$employees = executePlainSQL("select * from employee");
+		$vehicles = executePlainSQL("select * from vehicles");
+		$operatedby = executePlainSQL("select * from operatedby");
+		printEmployees($employees);
+		printVehicles($vehicles);
+		printOperatedBy($operatedby);
 
 /*
 	if ($_POST && $success) {
@@ -635,7 +537,7 @@ if ($db_conn) {
 	} else {
 		// Select data...
 	//	$result = executePlainSQL("select * from tab1");
-		$employees = executePlainSQL("select * from employees");
+		$employees = executePlainSQL("select * from employee");
 		$vehicles = executePlainSQL("select * from vehicles");
 		$operatedby = executePlainSQL("select * from operatedby");
 	//	printResult($result);
@@ -644,16 +546,6 @@ if ($db_conn) {
 		printOperatedBy($operatedby);
 	}*/
     
-    $counte = executePlainSQL("select count(*) from employees");
-    $countv = executePlainSQL("select count(*) from vehicles");
-    printEmployeeCount($counte);
-    printVehicleCount($countv);
-		$employees = executePlainSQL("select * from employees");
-		$vehicles = executePlainSQL("select * from vehicles");
-		$operatedby = executePlainSQL("select * from operatedby");
-		printEmployees($employees);
-		printVehicles($vehicles);
-		printOperatedBy($operatedby);
 	//Commit to save changes...
 	OCILogoff($db_conn);
 } else {
@@ -698,3 +590,317 @@ if ($db_conn) {
      Default mode is OCI_BOTH.  */
 ?>
 
+
+<h1>Manager functions:</h1>
+<!--
+<p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
+<form method="POST" action="manager.php">
+<p><input type="submit" value="Reset" name="reset"></p>
+</form>
+-->
+<!--
+<form method="POST" action= "manager.php" class="navbar-form navbar-left" >
+  <div class="form-group">
+    <input type="text" name="eSin" class="form-control" placeholder="SIN">
+    <input type="text" name="eName" class="form-control" placeholder="Name"><br>
+    <input type="text" name="ePhone" class="form-control" placeholder="Phone"><br>
+    <input type="text" name="eAddress" class="form-control" placeholder="Address"><br>
+    <input type="text" name="eUsername" class="form-control" placeholder="Username"><br>
+    <input type="text" name="ePassword" class="form-control" placeholder="Password"><br>
+    <input type="text" name="eWage" class="form-control" placeholder="Wage"><br>
+    <input type="text" name="eJobt" class="form-control" placeholder="Job Type"><br>
+    <input type="text" name="eWorks" class="form-control" placeholder="Work Schedule"><br>
+  </div>
+  <br>
+  <button type="submit" name="insertsubmit" class="btn btn-default">Submit</button>
+</form>
+-->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">
+  Insert employee
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create new employee</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action= "manager.php"  >
+        <div class="form-group">
+      <input type="text" name="eSin" required class="form-control" placeholder="SIN"><br>
+      <input type="text" name="eName" class="form-control" placeholder="Name"><br>
+      <input type="text" name="ePhone" class="form-control" placeholder="Phone"><br>
+      <input type="text" name="eAddress" class="form-control" placeholder="Address"><br>
+      <input type="text" name="eUsername" class="form-control" placeholder="Username"><br>
+      <input type="text" name="ePassword" class="form-control" placeholder="Password"><br>
+      <input type="text" name="eWage" class="form-control" placeholder="Wage"><br>
+      <input type="text" name="eJobt" class="form-control" placeholder="Job Type"><br>
+      <input type="text" name="eWorks" class="form-control" placeholder="Work Schedule"><br>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" name="insertsubmit" class="btn btn-primary">Insert</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#updateModal">
+  Update employee
+</button>
+<!-- Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="updateModalLabel">Update employee</h4>
+      </div>
+      <div class="modal-body">
+        <p class="lead">Change the values of corresponding to SIN of an Employee:</p>
+        <form method="POST" action= "manager.php"  >
+        <div class="form-group">
+      <input type="text" name="eSin" class="form-control" placeholder="SIN"><br><br>
+      <input type="text" name="eName" class="form-control" placeholder="Name">
+      <input type="text" name="ePhone" class="form-control" placeholder="Phone">
+      <input type="text" name="eAddress" class="form-control" placeholder="Address">
+      <input type="text" name="eUsername" class="form-control" placeholder="Username">
+      <input type="text" name="ePassword" class="form-control" placeholder="Password">
+      <input type="text" name="eWage" class="form-control" placeholder="Wage">
+      <input type="text" name="eJobt" class="form-control" placeholder="Job Type">
+      <input type="text" name="eWorks" class="form-control" placeholder="Work Schedule">
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" name="updatesubmit" class="btn btn-primary">Update</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#projectionModal">
+ Selection/Projection 
+</button>
+<!-- Modal -->
+<div class="modal fade" id="projectionModal" tabindex="-1" role="dialog" aria-labelledby="projectionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="projectionModalLabel">Selection and Projection Query</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action= "manager.php"  >
+        <div class="form-group">
+      <p class="lead">Projection:</p> 
+      <input type="text" name="projection" class="form-control" placeholder="Projection"><br><br>
+      <p class="lead">Selection:</p><br> 
+      <input type="text" name="eSin" class="form-control" placeholder="SIN">
+      <input type="text" name="eName" class="form-control" placeholder="Name">
+      <input type="text" name="ePhone" class="form-control" placeholder="Phone">
+      <input type="text" name="eAddress" class="form-control" placeholder="Address">
+      <input type="text" name="eUsername" class="form-control" placeholder="Username">
+      <input type="text" name="ePassword" class="form-control" placeholder="Password">
+      <input type="text" name="eWage" class="form-control" placeholder="Wage">
+      <input type="text" name="eJobt" class="form-control" placeholder="Job Type">
+      <input type="text" name="eWorks" class="form-control" placeholder="Work Schedule">
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" name="selectionsubmit" class="btn btn-primary">Query</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#vinsertModal">
+  Insert vehicle
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="vinsertModal" tabindex="-1" role="dialog" aria-labelledby="vinsertModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="vinsertModalLabel">Insert new vehicle</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action= "manager.php"  >
+        <div class="form-group">
+      <input type="text" name="vid" class="form-control" placeholder="vehicle id"><br>
+      <input type="text" name="capacity" class="form-control" placeholder="capacity"><br>
+      <input type="text" name="vmode" class="form-control" placeholder="mode of transport"><br>
+      <input type="text" name="cost" class="form-control" placeholder="cost of transport"><br>
+      <input type="text" name="model" class="form-control" placeholder="model of vehicle"><br>
+      <input type="text" name="age" class="form-control" placeholder="age of vehicle"><br>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" name="vinsertsubmit" class="btn btn-primary">Insert</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#vupdateModal">
+  Update vehicle
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="vupdateModal" tabindex="-1" role="dialog" aria-labelledby="vupdateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="vupdateModalLabel">Update vehicle</h4>
+      </div>
+      <div class="modal-body">
+        <p class="lead">Insert new values corresponding to vehicle VID:</p>
+        <form method="POST" action= "manager.php"  >
+        <div class="form-group">
+      <input type="text" name="vid" class="form-control" placeholder="vehicle id"><br><br>
+      <input type="text" name="capacity" class="form-control" placeholder="capacity">
+      <input type="text" name="vmode" class="form-control" placeholder="mode of transport">
+      <input type="text" name="cost" class="form-control" placeholder="cost of transport">
+      <input type="text" name="model" class="form-control" placeholder="model of vehicle">
+      <input type="text" name="age" class="form-control" placeholder="age of vehicle">
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" name="vupdatesubmit" class="btn btn-primary">Update</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#assignModal">
+ Assign vehicle
+</button>
+<!-- Modal -->
+<div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="assignModalLabel">Assign employee(SIN) to vehicle(VID)</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action= "manager.php"  >
+        <div class="form-group">
+      <p class="lead">Employee:</p> 
+      <input type="text" name="eSin" class="form-control" placeholder="SIN"><br>
+      <p class="lead">Vehicle:</p> 
+      <input type="text" name="vid" class="form-control" placeholder="vid">
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" name="assignsubmit" class="btn btn-primary">Assign</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#deleteModal">
+  Delete
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="deleteModalLabel">Deletion</h4>
+      </div>
+      <div class="modal-body">
+        <p class="lead">Insert Employee(SIN) or Vehicle(VID) to delete:</p>
+        <form method="POST" action= "manager.php"  >
+        <div class="form-group">
+    
+      <p class="lead">Employee:</p> 
+      <input type="text" name="eSin" class="form-control" placeholder="SIN"><br>
+
+      <p class="lead">Vehicle:</p> 
+      <input type="text" name="vid" class="form-control" placeholder="VID"><br>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" name="deletesubmit" class="btn btn-primary">Delete</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+<br><br><br>
+<h4> Show current employees' assigned vehicles (JOIN query) </h4>
+<p>
+<form method="POST" action="manager.php">
+<!--refresh page when submit-->
+<!--define two variables to pass the value-->
+<select class="form-control" name="join" size="1">
+  <option value="INNER JOIN" selected="selected">Inner join</option>
+  <option value="LEFT JOIN">Left join</option>
+  <option value="RIGHT JOIN">Right join</option>
+  <option value="FULL JOIN">Full join</option>
+</select>
+<button type="submit" class="btn btn-default" name="joinsubmit">Show assigned vehicles</button>
+</form>
+<br>
+<h4> Show min or max of average wage of employees (Nested aggregation with group-by) </h4>
+<p>
+<form method="POST" action="manager.php">
+<!--refresh page when submit-->
+<!--define two variables to pass the value-->
+<select class="form-control" name="nest" size="1">
+  <option value="MAX" selected="selected">Maximum</option>
+  <option value="MIN">Minimum</option>
+</select>
+<button type="submit" class="btn btn-default" name="nestsubmit">Show min/max of average wage</button>
+<!--
+<input type="submit" value="Show min/max of average wage" name="nestsubmit"></p>
+-->
+</form>
+<br>
+
+<h4> Find employees who have not been assigned to a vehicle (Division Query) </h4>
+<p>
+<form method="POST" action="manager.php">
+<!--refresh page when submit-->
+<!--define two variables to pass the value-->
+<button type="submit" class="btn btn-default" name="dividesubmit">Show unassigned employees</button>
+<!--
+<input type="submit" value="Show unassigned employees" name="dividesubmit"></p>
+-->
+</form>
+
+</div>
+</body>
+<?php else : 
+echo "ACCESS DENIED";
+endif;?>

@@ -40,7 +40,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.php">Home</a></li>
-            <li><a href="#Schedule">Schedule</a></li>
+            <li><a href="./schedule.php">Schedule</a></li>
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
             <li><a href="http://www.omfgdogs.com">Contact</a></li>
@@ -52,13 +52,14 @@
       <div class="starter-template">
     <div class="container">
 
-      <form class="form-signin" action="managerLogin.php" method="POST">
-        <h2 class="form-signin-heading">Please sign in (Manager)</h2>
-        <label for="inputEmail" class="sr-only">Username</label>
-        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        <button type="submit" value="Login" class="btn btn-lg btn-primary btn-block" name ="Login">Sign in</button>
+      <form class="form-signin" action="vehicle.php" method="POST">
+        <h2 class="form-signin-heading">Please Enter the User and New Balance</h2>
+        <label for="transitid" class="sr-only">Username</label>
+        <input type="text" id="transitid" name="transitid" class="form-control" placeholder="Input transitID" required autofocus>
+        <label for="transitid" class="sr-only">TransitID</label>
+        <input type="interval" id="" name="interval" class="form-control" placeholder="Input Delay Interval" required>
+        <label for="interval" class="sr-only">Interval</label>
+        <button type="submit" value="Change" class="btn btn-lg btn-primary btn-block" name ="Change"> Change Value!</button>
       </form>
 
     </div> <!-- /container -->
@@ -69,9 +70,6 @@
   </body>
 
 <?php
-if(isset($_SESSION['username'])){
-      header("location: index.php");
-    }
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
 
@@ -92,18 +90,21 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
 		echo htmlentities($e['message']);
     echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
     echo "</div>";
+
     $success = False;
   }
 
   $r = OCIExecute($statement, OCI_DEFAULT);
   if (!$r) {
     $e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-        echo "<div class='alert alert-danger' role='alert'>";
+       echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
 		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
     echo "</div>";
+
+
     $success = False;
   } else {
 
@@ -124,12 +125,14 @@ function executeBoundSQL($cmdstr, $list) {
 
   if (!$statement) {
     $e = OCI_Error($db_conn);
-        echo "<div class='alert alert-danger' role='alert'>";
+       echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
     echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
     echo "</div>";
+
+
     $success = False;
   }
 
@@ -144,12 +147,14 @@ function executeBoundSQL($cmdstr, $list) {
     $r = OCIExecute($statement, OCI_DEFAULT);
     if (!$r) {
       $e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
-          echo "<div class='alert alert-danger' role='alert'>";
+         echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
 		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
     echo "</div>";
+
+
       echo "<br>";
       $success = False;
     }
@@ -173,35 +178,25 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
     if (!is_writable(session_save_path())) {
-          echo "<div class='alert alert-danger' role='alert'>";
-    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
-    echo "<span class='sr-only'>Error:</span>";
       echo 'Session path "'.session_save_path().'" is not writable for PHP!'; 
-    echo "</div>";
     }
-    if(array_key_exists('Login', $_POST)) {
-        
-        $users = $_POST['username'];
-        $passw = $_POST['password'];
+    if(array_key_exists('Change', $_POST)) {
+      echo $_POST['transitid'];
+      $tid = $_POST['transitid'];
+      $inter = $_POST['interval'];
+      $ttime = $_POST['ttime'];
 
-      //oci_execute(,OCI_DEFAULT);
-      $result = executePlainSQL("select m.username from employee e, manager m where m.username = '$users' and e.password = '$passw' and m.username = e.username");
+      $result = executePlainSQL("select * from schedule where transitID = '$tid'");
       $numrows = oci_fetch_all($result, $res);
       if($numrows == 0){
-        echo "<div class='alert alert-danger' role='alert'>";
-    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
-    echo "<span class='sr-only'>Error:</span>";
-        echo "Invalid User or Password.";
-    echo "</div>";
+        echo "Invalid User";
+        echo $amount = $_POST['amount'];
       }
       if($numrows == 1){
-        $_SESSION['username'] = $users;
-        echo $_SESSION['username'];
-        $_SESSION['permissions'] = "MANAGER";
-        echo $_SESSION['permissions'];
-        header("location: manager.php");
+        executePlainSQL("update schedule set arrivals = (arrivals+interval'$inter' minute) where transitID = '$tid'");
+        executePlainSQL("update schedule set departures = (departures+interval'$inter' minute) where transitID = '$tid'");
+        header("location: schedule.php");
       }
-      //echo "Printing number of items: " . $result;
     }
     OCICommit($db_conn);
 
@@ -211,7 +206,7 @@ if ($db_conn) {
     //Commit to save changes...
 } else {
   $e = OCI_Error(); // For OCILogon errors pass no handle
-    echo "<div class='alert alert-danger' role='alert'>";
+     echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);

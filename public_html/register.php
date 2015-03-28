@@ -38,10 +38,10 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.php">Home</a></li>
-            <li><a href="#Schedule">Schedule</a></li>
+            <li><a href="schedule.php">Schedule</a></li>
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="http://www.omfgdogs.com">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -114,18 +114,26 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
   $statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
 
   if (!$statement) {
-    echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
     $e = OCI_Error($db_conn); // For OCIParse errors pass the       
     // connection handle
-    echo htmlentities($e['message']);
+        echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+		echo htmlentities($e['message']);
+    echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+    echo "</div>";
     $success = False;
   }
 
   $r = OCIExecute($statement, OCI_DEFAULT);
   if (!$r) {
-    echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
     $e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-    echo htmlentities($e['message']);
+        echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+		echo htmlentities($e['message']);
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+    echo "</div>";
     $success = False;
   } else {
 
@@ -145,9 +153,13 @@ function executeBoundSQL($cmdstr, $list) {
   $statement = OCIParse($db_conn, $cmdstr);
 
   if (!$statement) {
-    echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
     $e = OCI_Error($db_conn);
-    echo htmlentities($e['message']);
+        echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+		echo htmlentities($e['message']);
+    echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+    echo "</div>";
     $success = False;
   }
 
@@ -161,10 +173,15 @@ function executeBoundSQL($cmdstr, $list) {
     }
     $r = OCIExecute($statement, OCI_DEFAULT);
     if (!$r) {
-      echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
       echo "<script> var data = <?php echo $cmdstr; ?> alert(data);</script>";
       $e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
-      echo htmlentities($e['message']);
+
+        echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+		echo htmlentities($e['message']);
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+    echo "</div>";
       echo "<br>";
       $success = False;
     }
@@ -190,10 +207,10 @@ if ($db_conn) {
     if (array_key_exists('register', $_POST)) {
       //Getting the values from user and insert data into the table
       $tuple = array (
-        ":bind1" => $_POST['username'],
+        ":bind3" => $_POST['username'],
         ":bind2" => $_POST['address'],
-        ":bind3" => $_POST['password'],
-        ":bind4" => $_POST['pnumber'],
+        ":bind4" => $_POST['password'],
+        ":bind1" => $_POST['pnumber'],
       );
       $alltuples = array (
         $tuple
@@ -208,13 +225,17 @@ if ($db_conn) {
   } else {
     // Select data...
     $result = executePlainSQL("select * from customers");
-    printResult($result);
   }
 
   //Commit to save changes...
   OCILogoff($db_conn);
 } else {
-  echo "cannot connect";
   $e = OCI_Error(); // For OCILogon errors pass no handle
-  echo htmlentities($e['message']);
+      echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+		echo htmlentities($e['message']);
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+  echo "<br>cannot connect";
+    echo "</div>";
 }

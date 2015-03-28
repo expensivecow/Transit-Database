@@ -40,7 +40,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.php">Home</a></li>
-            <li><a href="#Schedule">Schedule</a></li>
+            <li><a href="./schedule.php">Schedule</a></li>
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
             <li><a href="http://www.omfgdogs.com">Contact</a></li>
@@ -52,13 +52,13 @@
       <div class="starter-template">
     <div class="container">
 
-      <form class="form-signin" action="managerLogin.php" method="POST">
-        <h2 class="form-signin-heading">Please sign in (Manager)</h2>
-        <label for="inputEmail" class="sr-only">Username</label>
-        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        <button type="submit" value="Login" class="btn btn-lg btn-primary btn-block" name ="Login">Sign in</button>
+      <form class="form-signin" action="balance.php" method="POST">
+        <h2 class="form-signin-heading">Please Enter the User and New Balance</h2>
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Input Customer Username" required autofocus>
+        <label for="newamount" class="sr-only">Amount</label>
+        <input type="text" id="amount" name="amount" class="form-control" placeholder="Input New Balance Amount" required>
+        <button type="submit" value="Value" class="btn btn-lg btn-primary btn-block" name ="Value"> Change Value!</button>
       </form>
 
     </div> <!-- /container -->
@@ -69,9 +69,6 @@
   </body>
 
 <?php
-if(isset($_SESSION['username'])){
-      header("location: index.php");
-    }
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
 
@@ -86,24 +83,30 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
   if (!$statement) {
     $e = OCI_Error($db_conn); // For OCIParse errors pass the       
     // connection handle
-        echo "<div class='alert alert-danger' role='alert'>";
+   echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
     echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
     echo "</div>";
+
+
+
+
     $success = False;
   }
 
   $r = OCIExecute($statement, OCI_DEFAULT);
   if (!$r) {
     $e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-        echo "<div class='alert alert-danger' role='alert'>";
+       echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
 		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
     echo "</div>";
+
+
     $success = False;
   } else {
 
@@ -124,12 +127,13 @@ function executeBoundSQL($cmdstr, $list) {
 
   if (!$statement) {
     $e = OCI_Error($db_conn);
-        echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
     echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
     echo "</div>";
+
+
     $success = False;
   }
 
@@ -144,12 +148,14 @@ function executeBoundSQL($cmdstr, $list) {
     $r = OCIExecute($statement, OCI_DEFAULT);
     if (!$r) {
       $e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
-          echo "<div class='alert alert-danger' role='alert'>";
+         echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
 		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
     echo "</div>";
+
+
       echo "<br>";
       $success = False;
     }
@@ -173,35 +179,30 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
     if (!is_writable(session_save_path())) {
-          echo "<div class='alert alert-danger' role='alert'>";
-    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
-    echo "<span class='sr-only'>Error:</span>";
       echo 'Session path "'.session_save_path().'" is not writable for PHP!'; 
-    echo "</div>";
     }
-    if(array_key_exists('Login', $_POST)) {
+    if(array_key_exists('Value', $_POST)) {
         
-        $users = $_POST['username'];
-        $passw = $_POST['password'];
+      $users = $_POST['username'];
+      $amount = $_POST['amount'];
 
-      //oci_execute(,OCI_DEFAULT);
-      $result = executePlainSQL("select m.username from employee e, manager m where m.username = '$users' and e.password = '$passw' and m.username = e.username");
+      $result = executePlainSQL("select username from customers where username = '$users'");
       $numrows = oci_fetch_all($result, $res);
       if($numrows == 0){
-        echo "<div class='alert alert-danger' role='alert'>";
+
+           echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
-        echo "Invalid User or Password.";
+        echo "Invalid User";
+        echo $amount = $_POST['amount'];
     echo "</div>";
+
+
       }
       if($numrows == 1){
-        $_SESSION['username'] = $users;
-        echo $_SESSION['username'];
-        $_SESSION['permissions'] = "MANAGER";
-        echo $_SESSION['permissions'];
-        header("location: manager.php");
+        executePlainSQL("update customers set credit = $amount where username = '$users'");
+        header("location: index.php");
       }
-      //echo "Printing number of items: " . $result;
     }
     OCICommit($db_conn);
 
@@ -218,6 +219,6 @@ if ($db_conn) {
   echo "<br>cannot connect";
     echo "</div>";
 
-
+ 
 }
 ?>
