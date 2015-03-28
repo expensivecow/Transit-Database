@@ -1,5 +1,6 @@
-<?php session_save_path("/home/f/f2r8/php");
+<?php session_save_path("/home/p/p2n8/php");
   session_start();?>
+<?php if($_SESSION["permissions"] == "EMPLOYEE" || $_SESSION["permissions"] == "MANAGER"):?>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,6 +37,7 @@
             <li><a href="http://www.omfgdogs.com">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+            <li><a href="signout.php">Change Password</a></li>
             <li><a href="signout.php">Sign Out</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -76,20 +78,21 @@
           return $statement;
           }
           function printResult($result) { //prints results from a select statement
-              echo "<br>Got data from table customers:<br>";
-              echo "<table>";
-              echo "<tr><th>User</th>". " " ."<th>Address </th>". " " ."<th>Password </th>". " " ."<th>Phone </th></tr>";
+              echo "<br>Employee Info<br>";
+              echo "<table class='table table-striped'>";
+              echo "<tr><th>Username</th>". " " ."<th>Wage</th>". " " ."<th>Job Type</th>". " " ."<th>Work Schedule</th></tr>";
 
               while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                 echo "<tr><td>" . " " . $row["sin"] . " </td><td>" . " " . $row["name"] . " </td><td>" . " " . $row["phone"] . "</td><td>"
-                 . " " . $row["address"] . "</td></tr>"; //or just use "echo $row[0]" 
+                 echo "<tr><td>" . $row["USERNAME"] . " </td><td>" . $row["WAGE"] . " </td><td>" . $row["JOBT"] . "</td><td>"
+                 . " " . $row["WORKS"] . "</td></tr>"; //or just use "echo $row[0]" 
               }
               echo "</table>";
           }
 
         // Connect Oracle...
         if ($db_conn) {
-            printResult(executePlainSQL("select * from employee"));
+            $users = $_SESSION["username"];
+            printResult(executePlainSQL("select * from employee where username = '$users'"));
 
             OCICommit($db_conn);
         }
@@ -102,3 +105,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../js/bootstrap.min.js"></script>
   </body>
+<?php else:
+  echo "ACCESS DENIED";
+  endif;
+?>
