@@ -1,4 +1,4 @@
-<?php session_save_path("/home/p/p2n8/php");
+<?php session_save_path("/home/h/h3g8/php");
   session_start();?>
 <?php if(($_SESSION['permissions'] == "MANAGER")) : ?>
 <html lang = "en">
@@ -35,11 +35,12 @@
           </div>
           <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-              <li><a href="./index.php">Home</a></li>
+              <li><a href="main">Home</a></li>
               <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
-              <li><a href="http://www.omfgdogs.com">Contact</a></li>
+              <li><a href="#contact">Contact</a></li>
               <li><a href="employeetable.php">Employee Table</a></li>
             </ul>
+
           	<ul class="nav navbar-nav navbar-right">
               <li><a href="changepass.php">Change Password</a></li>
               <li><a href="signout.php">Sign Out</a></li>

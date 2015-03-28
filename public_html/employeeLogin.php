@@ -1,4 +1,4 @@
-<?php session_save_path("/home/f/f2r8/php");
+<?php session_save_path("/home/h/h3g8/php");
   session_start();?>
   <head>
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
     <title>Signin Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="signin.css" rel="stylesheet">
@@ -84,18 +84,26 @@ function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL com
   $statement = OCIParse($db_conn, $cmdstr); //There is a set of comments at the end of the file that describe some of the OCI specific functions and how they work
 
   if (!$statement) {
-    echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
     $e = OCI_Error($db_conn); // For OCIParse errors pass the       
     // connection handle
-    echo htmlentities($e['message']);
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+		echo htmlentities($e['message']);
+    echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+    echo "</div>";
     $success = False;
   }
 
   $r = OCIExecute($statement, OCI_DEFAULT);
   if (!$r) {
-    echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
     $e = oci_error($statement); // For OCIExecute errors pass the statementhandle
-    echo htmlentities($e['message']);
+        echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+		echo htmlentities($e['message']);
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+    echo "</div>";
     $success = False;
   } else {
 
@@ -115,9 +123,15 @@ function executeBoundSQL($cmdstr, $list) {
   $statement = OCIParse($db_conn, $cmdstr);
 
   if (!$statement) {
-    echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
     $e = OCI_Error($db_conn);
-    echo htmlentities($e['message']);
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+		echo htmlentities($e['message']);
+    echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+    echo "</div>";
+
+
     $success = False;
   }
 
@@ -131,9 +145,13 @@ function executeBoundSQL($cmdstr, $list) {
     }
     $r = OCIExecute($statement, OCI_DEFAULT);
     if (!$r) {
-      echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
       $e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
-      echo htmlentities($e['message']);
+         echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+		echo htmlentities($e['message']);
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+    echo "</div>"; 
       echo "<br>";
       $success = False;
     }
@@ -168,7 +186,11 @@ if ($db_conn) {
       $result = executePlainSQL("select username from employee where username = '$users' and password = '$passw'");
       $numrows = oci_fetch_all($result, $res);
       if($numrows == 0){
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
         echo "Invalid User or Password.";
+    echo "</div>";
       }
       if($numrows == 1){
         $_SESSION['username'] = $users;
@@ -185,8 +207,13 @@ if ($db_conn) {
    // printResult($result);
     //Commit to save changes...
 } else {
-  echo "cannot connect";
   $e = OCI_Error(); // For OCILogon errors pass no handle
-  echo htmlentities($e['message']);
+
+      echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+  echo "<br>cannot connect";
+		echo htmlentities($e['message']);
+    echo "</div>";
 }
 ?>

@@ -1,4 +1,4 @@
-<?php session_save_path("/home/f/f2r8/php");
+<?php session_save_path("/home/h/h3g8/php");
   session_start();?>
   <head>
     <meta charset="utf-8">
