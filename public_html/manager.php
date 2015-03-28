@@ -336,7 +336,7 @@ if ($db_conn) {
 				$tuple
 			);
 		//	executeBoundSQL("insert into tab1 values (:bind1, :bind2)", $alltuples);
-			executeBoundSQL("insert into employees values (:bind3, :bind4, :bind5, :bind6, :bind7, :bind8, :bind9, :bind10, :bind11 )", $alltuples);
+			executeBoundSQL("insert into employee values (:bind3, :bind4, :bind5, :bind6, :bind7, :bind8, :bind9, :bind10, :bind11 )", $alltuples);
 			OCICommit($db_conn);
 
 		} else
@@ -352,7 +352,7 @@ if ($db_conn) {
 				$jobt = $_POST['eJobt'];
 				$works = $_POST['eWorks'];
 
-				$query="update employees set ";
+				$query="update employee set ";
 				$query.=(!empty($_POST['eName']))? "name = '$name',":"";
 				$query.=(!empty($_POST['ePhone']))? "phone=$phone,":"";
 				$query.=(!empty($_POST['eAddress']))? "address='$address',":"";
@@ -370,9 +370,9 @@ if ($db_conn) {
 			} else
 				if (array_key_exists('dostuff', $_POST)) {
 					// Insert data into table...
-					executePlainSQL("insert into employees values (10, 'Frank',604,'ubc','test','pass',10,'driver','WTF')");
-					executePlainSQL("insert into employees values (11, 'Jeff',604,'ubc','test','pass',10,'driver','WTF')");
-					executePlainSQL("insert into employees values (12, 'Manning',604,'ubc','test','pass',10,'driver','WTF')");
+					executePlainSQL("insert into employee values (10, 'Frank',604,'ubc','test','pass',10,'driver','WTF')");
+					executePlainSQL("insert into employee values (11, 'Jeff',604,'ubc','test','pass',10,'driver','WTF')");
+					executePlainSQL("insert into employee values (12, 'Manning',604,'ubc','test','pass',10,'driver','WTF')");
 					executePlainSQL("insert into vehicles values (15,5,'taxi',3,'abc',5)");
 					// Inserting data into table using bound variables
 					$list1 = array (
@@ -412,7 +412,7 @@ if ($db_conn) {
 				if(empty($_POST['projection'])){
 					$pro = '*';
 				}
-				$query.=(!empty($_POST['projection']))? "'$result' from employees ":"* from employees "; 
+				$query.=(!empty($_POST['projection']))? "'$result' from employee ":"* from employee "; 
 
 				$query = clean($query);
 					$query.="where ";
@@ -445,7 +445,7 @@ if ($db_conn) {
 				if (array_key_exists('deletesubmit', $_POST)){
 					if(!empty($_POST['eSin'])){
 						$sin = $_POST['eSin'];
-						executePlainSQL("delete from employees where sin=$sin");						
+						executePlainSQL("delete from employee where sin=$sin");						
 					}
 					if(!empty($_POST['vid'])){
 						$vid = $_POST['vid'];
@@ -456,7 +456,7 @@ if ($db_conn) {
 					OCICommit($db_conn);
         } else
         if (array_key_exists('joinsubmit', $_POST)){
-          $query = "select e.sin, e.name, v.vid, v.vmode from employees e ";
+          $query = "select e.sin, e.name, v.vid, v.vmode from employee e ";
           if(!empty($_POST['join'])){
           $join = $_POST['join'];
          
@@ -468,13 +468,13 @@ if ($db_conn) {
         } else
           if (array_key_exists('nestsubmit', $_POST)){
             $minmax = $_POST['nest'];          
-            $query = "select $minmax(avg(wage)) from employees group by jobt"; 
+            $query = "select $minmax(avg(wage)) from employee group by jobt"; 
             $result = executePlainSQL($query);
             printNested($result, $minmax);
           } else
             if (array_key_exists('dividesubmit', $_POST)){
-            $query = "select e.sin, e.name, e.phone from employees e where not exists (select ob.sin from OperatedBy ob where ob.sin = e.sin)";
-            #$query = "select e.sin, e.name from employees e where not exists ((select v.vid from vehicles v) except (select ob.vid from OperatedBy ob where ob.sid = e.sin))";
+            $query = "select e.sin, e.name, e.phone from employee e where not exists (select ob.sin from OperatedBy ob where ob.sin = e.sin)";
+            #$query = "select e.sin, e.name from employee e where not exists ((select v.vid from vehicles v) except (select ob.vid from OperatedBy ob where ob.sid = e.sin))";
             $result = executePlainSQL($query);
             printDivide($result);
             } else
@@ -520,11 +520,11 @@ if ($db_conn) {
       }
                 }
 
-    $counte = executePlainSQL("select count(*) from employees");
+    $counte = executePlainSQL("select count(*) from employee");
     $countv = executePlainSQL("select count(*) from vehicles");
     printEmployeeCount($counte);
     printVehicleCount($countv);
-		$employees = executePlainSQL("select * from employees");
+		$employees = executePlainSQL("select * from employee");
 		$vehicles = executePlainSQL("select * from vehicles");
 		$operatedby = executePlainSQL("select * from operatedby");
 		printEmployees($employees);
