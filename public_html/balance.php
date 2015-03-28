@@ -52,14 +52,13 @@
       <div class="starter-template">
     <div class="container">
 
-      <form class="form-signin" action="vehicle.php" method="POST">
+      <form class="form-signin" action="balance.php" method="POST">
         <h2 class="form-signin-heading">Please Enter the User and New Balance</h2>
-        <label for="transitid" class="sr-only">Username</label>
-        <input type="text" id="transitid" name="transitid" class="form-control" placeholder="Input transitID" required autofocus>
-        <label for="transitid" class="sr-only">TransitID</label>
-        <input type="interval" id="" name="interval" class="form-control" placeholder="Input Delay Interval" required>
-        <label for="interval" class="sr-only">Interval</label>
-        <button type="submit" value="Change" class="btn btn-lg btn-primary btn-block" name ="Change"> Change Value!</button>
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Input Customer Username" required autofocus>
+        <label for="newamount" class="sr-only">Amount</label>
+        <input type="text" id="amount" name="amount" class="form-control" placeholder="Input New Balance Amount" required>
+        <button type="submit" value="Value" class="btn btn-lg btn-primary btn-block" name ="Value"> Change Value!</button>
       </form>
 
     </div> <!-- /container -->
@@ -157,22 +156,20 @@ if ($db_conn) {
     if (!is_writable(session_save_path())) {
       echo 'Session path "'.session_save_path().'" is not writable for PHP!'; 
     }
-    if(array_key_exists('Change', $_POST)) {
-      echo $_POST['transitid'];
-      $tid = $_POST['transitid'];
-      $inter = $_POST['interval'];
-      $ttime = $_POST['ttime'];
+    if(array_key_exists('Value', $_POST)) {
+        
+      $users = $_POST['username'];
+      $amount = $_POST['amount'];
 
-      $result = executePlainSQL("select * from schedule where transitID = '$tid'");
+      $result = executePlainSQL("select username from customers where username = '$users'");
       $numrows = oci_fetch_all($result, $res);
       if($numrows == 0){
         echo "Invalid User";
         echo $amount = $_POST['amount'];
       }
       if($numrows == 1){
-        executePlainSQL("update schedule set arrivals = (arrivals+interval'$inter' minute) where transitID = '$tid'");
-        executePlainSQL("update schedule set departures = (departures+interval'$inter' minute) where transitID = '$tid'");
-        header("location: schedule.php");
+        executePlainSQL("update customers set credit = $amount where username = '$users'");
+        header("location: index.php");
       }
     }
     OCICommit($db_conn);
