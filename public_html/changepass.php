@@ -54,8 +54,6 @@
 
       <form class="form-signin" action="changepass.php" method="POST">
         <h2 class="form-signin-heading">Please Fill in the Boxes Below</h2>
-        <label for="user" class="sr-only">Username</label>
-        <input type="text" id="user" name="user" class="form-control" placeholder="Username" required autofocus>
 
         <label for="oldpass" class="sr-only">OldPass</label>
         <input type="password" id="oldpass" name="oldpass" class="form-control" placeholder="Old Password" required>
@@ -186,6 +184,42 @@ if ($db_conn) {
     echo "</div>";
     }
     if(array_key_exists('change', $_POST)) {
+          $users = $_SESSION['username'];
+          $passw = $_POST['oldpass'];
+          $newpass = $_POST['newpass'];
+          $confirmpass = $_POST['confirmpass'];
+      
+          if($_SESSION['permissions'] == 'USER') {
+              $result = executePlainSQL("select username from customers where username = '$users' and password = '$passw'");
+              $numrows = oci_fetch_all($result, $res);
+              if($numrows == 0) {
+                  echo "Wrong User and Password Combination";
+              }
+              if($numrows == 1 && ($_POST['newpass'] == $_POST['confirmpass'])){
+                executePlainSQL("update customers set password = '$newpass' where username = '$users'");
+                header("location: signout.php");
+              }
+          } elseif($_SESSION['permissions'] == 'EMPLOYEE') {
+              $result = executePlainSQL("select username from employee where username = '$users' and password = '$passw'");
+              $numrows = oci_fetch_all($result, $res);
+              if($numrows == 0) {
+                  echo "Wrong User and Password Combination";
+              }
+              if($numrows == 1 && ($_POST['newpass'] == $_POST['confirmpass'])){
+                executePlainSQL("update employee set password = '$newpass' where username = '$users'");
+                header("location: signout.php");
+              }
+          } elseif($_SESSION['permissions'] == 'MANAGER') {
+              $result = executePlainSQL("select username from manager m, employee e where m.username = '$users' and m.username = e.username and e.password = '$passw'");
+              $numrows = oci_fetch_all($result, $res);
+              if($numrows == 0) {
+                  echo "Wrong User and Password Combination";
+              }
+              if($numrows == 1 && ($_POST['newpass'] == $_POST['confirmpass'])){
+                executePlainSQL("update employee set password = '$newpass' where username = '$users'");
+                header("location: signout.php");
+              }
+          }
       
       //echo "Printing number of items: " . $result;
     }
