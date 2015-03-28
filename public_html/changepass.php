@@ -149,9 +149,13 @@ function executeBoundSQL($cmdstr, $list) {
     }
     $r = OCIExecute($statement, OCI_DEFAULT);
     if (!$r) {
-      echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
       $e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
-      echo htmlentities($e['message']);
+          echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+		echo htmlentities($e['message']);
+		echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+    echo "</div>";
       echo "<br>";
       $success = False;
     }
@@ -175,7 +179,11 @@ function printResult($result) { //prints results from a select statement
 // Connect Oracle...
 if ($db_conn) {
     if (!is_writable(session_save_path())) {
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
       echo 'Session path "'.session_save_path().'" is not writable for PHP!'; 
+    echo "</div>";
     }
     if(array_key_exists('change', $_POST)) {
       
@@ -188,8 +196,16 @@ if ($db_conn) {
    // printResult($result);
     //Commit to save changes...
 } else {
-  echo "cannot connect";
+
+
   $e = OCI_Error(); // For OCILogon errors pass no handle
-  echo htmlentities($e['message']);
+    echo "<div class='alert alert-danger' role='alert'>";
+    echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
+    echo "<span class='sr-only'>Error:</span>";
+  echo "cannot connect";
+		echo htmlentities($e['message']);
+    echo "</div>";
+
+
 }
 ?>

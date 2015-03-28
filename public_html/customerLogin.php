@@ -223,7 +223,7 @@ if ($db_conn) {
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
-  echo "cannot connect";
+  echo "<br>cannot connect";
     echo "</div>";
 }
 ?>
