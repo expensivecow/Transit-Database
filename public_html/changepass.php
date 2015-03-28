@@ -1,4 +1,4 @@
-<?php session_save_path("/home/h/h3g8/php");
+<?php session_save_path("/home/f/f2r8/php");
   session_start();?>
   <head>
     <meta charset="utf-8">
@@ -210,7 +210,7 @@ if ($db_conn) {
                 header("location: signout.php");
               }
           } elseif($_SESSION['permissions'] == 'MANAGER') {
-              $result = executePlainSQL("select username from manager m, employee e where m.username = '$users' and m.username = e.username and e.password = '$passw'");
+              $result = executePlainSQL("select m.username from manager m, employee e where m.username = '$users' and e.username = '$users' and e.password = '$passw'");
               $numrows = oci_fetch_all($result, $res);
               if($numrows == 0) {
                   echo "Wrong User and Password Combination";
