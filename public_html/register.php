@@ -225,7 +225,6 @@ if ($db_conn) {
   } else {
     // Select data...
     $result = executePlainSQL("select * from customers");
-    printResult($result);
   }
 
   //Commit to save changes...

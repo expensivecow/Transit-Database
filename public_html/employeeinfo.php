@@ -37,7 +37,7 @@
             <li><a href="http://www.omfgdogs.com">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="signout.php">Change Password</a></li>
+            <li><a href="changepass.php">Change Password</a></li>
             <li><a href="signout.php">Sign Out</a></li>
           </ul>
         </div><!--/.nav-collapse -->

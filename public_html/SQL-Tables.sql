@@ -126,7 +126,7 @@ create table operatedby(
 
 grant select on operatedby to public;
 
-insert into employee  values(747565334, 'Jannina Valencia', 7785433343, '678 Rose St Vancouver', 'jval25', 'dalevr', 7000, 'bus driver', 'mwf');
+insert into employee  values(747565334, 'Jannina Valencia', 7785433343, '678 Rose St Vancouver', 'jval25', 'a', 7000, 'bus driver', 'mwf');
 insert into employee  values(765654234, 'April Green', 6046768890, '6718 Carnation St Burnaby', 'aprgr', '78htvh', 7400, 'taxi driver', 'mtwthf');
 insert into employee  values(732098789, 'Morgan Free', 7785463343, '3468 Clark St Vancouver', 'freeee', '78bsgdk', 5000, 'operator', 'mtwfsat');
 insert into employee  values(745909897, 'Leslie Wong', 7784230186, '1223 Sasamat St Richmond', 'lwongg', 'afgfeirg', 4500, 'maintenance', 'mtwthfsun');
@@ -146,9 +146,9 @@ insert into vehicles values(4, 40, 'seabus', 3.50, 'mod1221', 15);
 insert into vehicles values(5, 50, 'bus', 2.75, 'mod788', 10);
 insert into vehicles values(6, 100,'train', 4.75, 'mod3321', 7);
 
-insert into customers values(7786546588, '340 Agnes St New Westminster', 'bright', '8h6hdh', 30);
-insert into customers values(6046557816, '4567 Drake St Vancouver', 'narms', '7nshka', 0);
-insert into customers values(6045551086, '32112 Cornwood St Coquitlam', 'lsmith', '7jhah', 21);
+insert into customers values(7786546588, '340 Agnes St New Westminster', 'bright', 'easy', 30);
+insert into customers values(6046557816, '4567 Drake St Vancouver', 'narms', 'easy', 0);
+insert into customers values(6045551086, '32112 Cornwood St Coquitlam', 'lsmith', 'easy', 21);
 insert into customers values(6045017683, '1222 Knight St Vancouver', 'flints', '6ndghps', 100);
 insert into customers values(6049807692, '1212 Cordova St North Vancouver', 'anne', 'kadhdo', 65);
 insert into customers values(7786446588, '343 Agnes St New Westminster', 'leftb', 'asdd4', 40);

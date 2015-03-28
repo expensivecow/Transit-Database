@@ -1,4 +1,4 @@
-<?php session_save_path("/home/f/f2r8/php");
+<?php session_save_path("/home/p/p2n8/php");
   session_start();?>
   <head>
     <meta charset="utf-8">
@@ -44,6 +44,10 @@
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
             <li><a href="http://www.omfgdogs.com">Contact</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="changepass.php">Change Password</a></li>
+            <li><a href="signout.php">Sign Out</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -210,7 +214,7 @@ if ($db_conn) {
                 header("location: signout.php");
               }
           } elseif($_SESSION['permissions'] == 'MANAGER') {
-              $result = executePlainSQL("select m.username from manager m, employee e where m.username = '$users' and e.username = '$users' and e.password = '$passw'");
+              $result = executePlainSQL("select username from manager m, employee e where m.username = '$users' and m.username = e.username and e.password = '$passw'");
               $numrows = oci_fetch_all($result, $res);
               if($numrows == 0) {
                   echo "Wrong User and Password Combination";

@@ -1,4 +1,4 @@
-<?php session_save_path("/home/h/h3g8/php");
+<?php session_save_path("/home/p/p2n8/php");
   session_start();?>
   <head>
     <meta charset="utf-8">
@@ -40,7 +40,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.php">Home</a></li>
-            <li><a href="#Schedule">Schedule</a></li>
+            <li><a href="schedule.php">Schedule</a></li>
             <li><a href="./register.php">Register</a></li>
             <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
             <li><a href="http://www.omfgdogs.com">Contact</a></li>

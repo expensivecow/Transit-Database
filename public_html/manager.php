@@ -1,4 +1,4 @@
-<?php session_save_path("/home/h/h3g8/php");
+<?php session_save_path("/home/p/p2n8/php");
   session_start();?>
 <?php if(($_SESSION['permissions'] == "MANAGER")) : ?>
 <html lang = "en">
@@ -11,7 +11,7 @@
 
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-<link href="main/starter-template.css" rel="stylesheet">
+<link href="./starter-template.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <style type="text/css">
@@ -35,12 +35,11 @@
           </div>
           <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-              <li><a href="main">Home</a></li>
+              <li><a href="index.php">Home</a></li>
               <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
               <li><a href="#contact">Contact</a></li>
               <li><a href="employeetable.php">Employee Table</a></li>
             </ul>
-
           	<ul class="nav navbar-nav navbar-right">
               <li><a href="changepass.php">Change Password</a></li>
               <li><a href="signout.php">Sign Out</a></li>
@@ -54,7 +53,7 @@
 //html; it's now parsing PHP
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_h3g8", "a35788116", "ug");
+$db_conn = OCILogon("ora_p2n8", "a36523124", "ug");
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
@@ -336,7 +335,7 @@ if ($db_conn) {
 				$tuple
 			);
 		//	executeBoundSQL("insert into tab1 values (:bind1, :bind2)", $alltuples);
-			executeBoundSQL("insert into employee values (:bind3, :bind4, :bind5, :bind6, :bind7, :bind8, :bind9, :bind10, :bind11 )", $alltuples);
+			executeBoundSQL("insert into employees values (:bind3, :bind4, :bind5, :bind6, :bind7, :bind8, :bind9, :bind10, :bind11 )", $alltuples);
 			OCICommit($db_conn);
 
 		} else
@@ -352,7 +351,7 @@ if ($db_conn) {
 				$jobt = $_POST['eJobt'];
 				$works = $_POST['eWorks'];
 
-				$query="update employee set ";
+				$query="update employees set ";
 				$query.=(!empty($_POST['eName']))? "name = '$name',":"";
 				$query.=(!empty($_POST['ePhone']))? "phone=$phone,":"";
 				$query.=(!empty($_POST['eAddress']))? "address='$address',":"";
@@ -370,9 +369,9 @@ if ($db_conn) {
 			} else
 				if (array_key_exists('dostuff', $_POST)) {
 					// Insert data into table...
-					executePlainSQL("insert into employee values (10, 'Frank',604,'ubc','test','pass',10,'driver','WTF')");
-					executePlainSQL("insert into employee values (11, 'Jeff',604,'ubc','test','pass',10,'driver','WTF')");
-					executePlainSQL("insert into employee values (12, 'Manning',604,'ubc','test','pass',10,'driver','WTF')");
+					executePlainSQL("insert into employees values (10, 'Frank',604,'ubc','test','pass',10,'driver','WTF')");
+					executePlainSQL("insert into employees values (11, 'Jeff',604,'ubc','test','pass',10,'driver','WTF')");
+					executePlainSQL("insert into employees values (12, 'Manning',604,'ubc','test','pass',10,'driver','WTF')");
 					executePlainSQL("insert into vehicles values (15,5,'taxi',3,'abc',5)");
 					// Inserting data into table using bound variables
 					$list1 = array (
@@ -538,7 +537,7 @@ if ($db_conn) {
 	} else {
 		// Select data...
 	//	$result = executePlainSQL("select * from tab1");
-		$employees = executePlainSQL("select * from employees");
+		$employees = executePlainSQL("select * from employee");
 		$vehicles = executePlainSQL("select * from vehicles");
 		$operatedby = executePlainSQL("select * from operatedby");
 	//	printResult($result);

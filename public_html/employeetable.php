@@ -32,10 +32,14 @@
           </div>
           <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-              <li><a href="main">Home</a></li>
+              <li><a href="index.php">Home</a></li>
               <li><a href="http://www.cs.ubc.ca/~laks/cpsc304/project.html">About</a></li>
               <li><a href="http://www.omfgdogs.com">Contact</a></li>
               <li><a href="employeetable.php">Employee Table</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="changepass.php">Change Password</a></li>
+              <li><a href="signout.php">Sign Out</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
