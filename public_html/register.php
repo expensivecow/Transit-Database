@@ -176,6 +176,7 @@ function executeBoundSQL($cmdstr, $list) {
       echo "<script> var data = <?php echo $cmdstr; ?> alert(data);</script>";
       $e = OCI_Error($statement); // For OCIExecute errors pass the statementhandle
 
+        echo "<div class='alert alert-danger' role='alert'>";
     echo "<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>";
     echo "<span class='sr-only'>Error:</span>";
 		echo htmlentities($e['message']);
